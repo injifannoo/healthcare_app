@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:healthcare_app/pages/homepage.dart';
-import 'package:healthcare_app/pages/services.dart';
-import 'package:provider/provider.dart';
-import 'usecases/usecase_import.dart';
-import 'models/model.dart';
-import 'pages/pages.dart'; // Import the ChatPage
+
+import 'Doctor/doctor.dart';
 
 class Home extends StatefulWidget {
   const Home({
@@ -17,9 +13,10 @@ class Home extends StatefulWidget {
 class _MyHomePageState extends State<Home> {
   int _currentPage = 0;
   static List<Widget> pages = <Widget>[
-    const MyHomePage(),
-    Services(),
-    Checkin(),
+    const Home(),
+    DisplayDoctor(),
+    //Services(),
+    //Checkin(),
   ];
   void _onItemTapped(int index) {
     setState(() {
@@ -43,12 +40,16 @@ class _MyHomePageState extends State<Home> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.schedule_send_rounded),
-            label: 'Services',
+            icon: Icon(Icons.health_and_safety),
+            label: 'Doctors',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.medication),
             label: 'Check-in',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.health_and_safety),
+            label: 'Doctor',
           ),
         ],
       ),

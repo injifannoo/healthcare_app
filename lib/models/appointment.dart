@@ -1,26 +1,28 @@
-/*  Use Case ID: UC1
-Use Case Name: Appointment Scheduling
-Goal: To enable patients to schedule appointments through the mobile app
-Actor: Patient
-
-Flow of Events:
-    1. The patient opens the mobile app.
-    2. The app displays the home page.
-    3. The patient selects the "Appointments" option from the menu.
-    4. The app displays the available appointment slots.
-    5. The patient selects a preferred appointment slot.
-    6. The app prompts the patient to confirm the appointment booking.
-    7. The patient confirms the booking.
-    8. The app sends a confirmation notification to the patient.
-    9. The app updates the appointment schedule.
-    10. End of the use case.
-
- */
-// appointment.dart
+import 'dart:convert';
 
 class Appointment {
-  final String patientName;
-  final DateTime appointmentDate;
+  final String doctorId;
+  final String date;
+  final String timeRange;
 
-  Appointment({required this.patientName, required this.appointmentDate});
+  Appointment({
+    required this.doctorId,
+    required this.date,
+    required this.timeRange,
+  });
+
+  factory Appointment.fromJson(String jsonString) {
+    final Map<String, dynamic> json = jsonDecode(jsonString);
+    return Appointment(
+      doctorId: json['doctorId'],
+      date: json['date'],
+      timeRange: json['timeRange'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'doctorId': doctorId,
+        'date': date,
+        'timeRange': timeRange,
+      };
 }
