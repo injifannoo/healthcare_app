@@ -20,8 +20,7 @@
     
                                     
                                     Introduction
-                                    
-Welcome to DoctorPatientSocialMedia, where doctors can schedule appointments, chat, post, and notify you of your appointments! 
+                                    Welcome to DoctorPatientSocialMedia, where doctors can schedule appointments, chat, post, and notify you of your appointments! 
 Our app aims to empower users to take charge of their health by providing a user-friendly and intuitive platform that helps them manage their healthcare needs efficiently. 
 Whether you're scheduling appointments or not, the DoctorPatientSocialMedia App has got you covered. 
 Our app is designed with both patients and doctors in mind, ensuring seamless communication and a holistic approach to health management. 
@@ -30,17 +29,11 @@ It's our mission to make healthcare accessible, organized, and convenient for ev
 
                                       Features
 1. Sign Up and Log In: Users can create a new account by signing up or log in to an existing account. This is a fundamental feature to personalize the user experience and keep track of their interactions.
-
 2. Navigation: The app provides different sections that users can explore. Clear and intuitive navigation is crucial for users to easily access the various features and functionalities.
- 
 3. Appointment Scheduling: Users can schedule appointments with their preferred doctors at a time that is convenient for them. This feature can enhance the accessibility and convenience of healthcare services.
- 
 4. Doctor Chat: Users can have real-time chat conversations with doctors. This can be particularly useful for quick inquiries, follow-up questions, or general medical advice.
-   
 5. Read Posts: Users can access posts made by doctors or other patients. This could include health tips, informational articles, patient experiences, and more. It can be a valuable source of health-related information.
- 
 6. User Posts: Users can share their own health-related information, questions, and thoughts. This can foster a sense of community and allow users to engage with others who might have similar concerns.
- 
 7. Secure Notifications: The app provides a secure way for healthcare providers to communicate with users through notifications. This can include appointment reminders, test results, or other important updates.
 
 
@@ -72,7 +65,7 @@ To use DoctorPatientSocialMedia, follow these simple steps:
 
 
     
-                                 Screenshots
+                                Screenshots
   1. Dashboard: View all your health data at a glance.
   
   2. Posts: Never miss an information with timely reminders.
