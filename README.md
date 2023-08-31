@@ -20,11 +20,8 @@
     
                                     
                                     Introduction
-                                    Welcome to DoctorPatientSocialMedia, where doctors can schedule appointments, chat, post, and notify you of your appointments! 
-Our app aims to empower users to take charge of their health by providing a user-friendly and intuitive platform that helps them manage their healthcare needs efficiently. 
-Whether you're scheduling appointments or not, the DoctorPatientSocialMedia App has got you covered. 
-Our app is designed with both patients and doctors in mind, ensuring seamless communication and a holistic approach to health management. 
-It's our mission to make healthcare accessible, organized, and convenient for everyone.
+Welcome to DoctorPatientSocialMedia, where doctors can schedule appointments, chat, post, and notify you of your appointments! 
+Our app aims to empower users to take charge of their health by providing a user-friendly and intuitive platform that helps them manage their healthcare needs efficiently.Whether you're scheduling appointments or not, the DoctorPatientSocialMedia App has got you covered. Our app is designed with both patients and doctors in mind, ensuring seamless communication and a holistic approach to health management. It's our mission to make healthcare accessible, organized, and convenient for everyone.
 
 
                                       Features
