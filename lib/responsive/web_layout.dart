@@ -14,7 +14,7 @@ class _WebScreenLayoutState extends State<WebScreenLayout> {
   int _currentPage = 0;
   List<Widget> pages = <Widget>[
     const WebScreenLayout(),
-    DisplayDoctor(),
+    const DisplayDoctor(),
     //Services(),
     //Checkin(),
   ];

@@ -1,21 +1,30 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:healthcare_app/Appointment/my_appointment_page.dart';
-import 'package:healthcare_app/Doctor/doctor.dart';
 import 'package:healthcare_app/Providers/provider.dart';
-import 'package:healthcare_app/Screens/screen.dart';
-import 'package:healthcare_app/registeration_choice.dart';
+import 'package:healthcare_app/home.dart';
 import 'package:healthcare_app/responsive/responsive.dart';
 import 'package:healthcare_app/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'Post/post.dart';
-import 'Screens/display_current_user.dart';
-import 'Screens/display_user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //AwesomeNotification().initialize(
+  //NotificationChannel(
+  //channelKey:'basic_channel',
+  //channelName='Basic Notification',
+  //defaultColor='Colors.teal',
+  //importance:NotificationImportance.High,
+  //ChannelShowBadge:true,),
+  //NotificationChannel(
+  //channelKey:'scheduled_channel',
+  //channelName='Scheduled Notification',
+  //defaultColor='Colors.teal',
+  //importance:NotificationImportance.High,
+  //soundSource:'resource://raw/res_custom_notification
+//),
+//);
   if (kIsWeb) {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
@@ -75,8 +84,9 @@ class MyApp extends StatelessWidget {
                 ),
               );
             }
-            return MyAppointmentPage();
-          },
+            return const Home();
+          }, 
+          stream: null,
         ),
       ),
     );

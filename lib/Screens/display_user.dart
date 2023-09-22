@@ -20,10 +20,10 @@ class _DisplayUserState extends State<DisplayUser> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    final List<Users> users = userProvider.users;
+    final List<Users> users = userProvider.getUsers;
 
     return Scaffold(
-      appBar: AppBar(title: Text('All Users')),
+      appBar: AppBar(title: const Text('All Users')),
       body: ListView.builder(
         itemCount: users.length,
         itemBuilder: (context, index) {

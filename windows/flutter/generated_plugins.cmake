@@ -3,8 +3,9 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  desktop_webview_auth
+  awesome_notifications
   file_selector_windows
+  firebase_auth
   firebase_core
 )
 

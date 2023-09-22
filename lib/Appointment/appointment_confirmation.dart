@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Import DateFormat from intl package
+// Import DateFormat from intl package
 import 'package:provider/provider.dart';
 import '../Providers/provider.dart';
 import '../models/model.dart';
@@ -11,7 +11,7 @@ class AppointmentConfirmationScreen extends StatefulWidget {
   //final TimeOfDay selectedTime;
   final String selectedTimeRange;
 
-  AppointmentConfirmationScreen({
+  const AppointmentConfirmationScreen({super.key, 
     required this.doctor,
     //required this.appointment,
     required this.selectedDate,
@@ -39,33 +39,33 @@ class _AppointmentConfirmationScreenState
     final List<Appointment> app = apppointments.appointments;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Appointment Confirmation'),
+        title: const Text('Appointment Confirmation'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Appointment Confirmation',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
             Text(
               'Doctor: ${widget.doctor.name}',
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
             Text(
               'Doctor: ${widget.doctor.doctorId}',
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
             Text(
               'Date: ${widget.doctor.availableDates}', // Format the date
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
             Text(
               'Time: ${widget.doctor.availableTimeRanges}',
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 20),
             const Text(
@@ -85,7 +85,7 @@ class _AppointmentConfirmationScreenState
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MyAppointmentPage(),
+                    builder: (context) => const MyAppointmentPage(),
                   ),
                 );
               },

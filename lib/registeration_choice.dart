@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:healthcare_app/Doctor/add_doctor.dart';
 
 import 'Screens/screen.dart';
 
@@ -23,7 +22,7 @@ class RegistrationChoice extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
                   );
                 },
                 child: const Text('Continue as Doctor')),
@@ -32,7 +31,7 @@ class RegistrationChoice extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
                   );
                 },
                 child: const Text('Continue as Other User')),

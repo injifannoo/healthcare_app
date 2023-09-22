@@ -47,7 +47,10 @@ class Auth {
           password: password,
           name: name,
           photoUrl: photoUrl,
-          //uid: cred.user!.uid,
+          uid: cred.user!.uid,
+          lastMessageTime: DateTime.now(),
+          followers: [],
+          following: [],
           // address: address,
           // dateOfBirth: dateOfBirth,
           // gender: gender,
@@ -84,6 +87,10 @@ class Auth {
   }
 
   Future<void> handleSignOut() async {
+    await _auth.signOut();
+  }
+
+  Future<void> signOut() async {
     await _auth.signOut();
   }
 }

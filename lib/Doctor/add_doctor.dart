@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:healthcare_app/Doctor/doctor.dart';
 import 'package:healthcare_app/Screens/login_screen.dart';
 import 'package:healthcare_app/utils/colors.dart';
-import 'package:healthcare_app/utils/image.dart';
 import 'package:healthcare_app/widgets.dart';
 import 'package:image_picker/image_picker.dart';
-import '../responsive/responsive.dart';
 import 'package:time_range_picker/time_range_picker.dart';
-import 'package:time_range_picker/src/utils.dart';
 
 class AddDoctor extends StatefulWidget {
   const AddDoctor({
@@ -90,14 +87,14 @@ class _LoginScreenState extends State<AddDoctor> {
       showSnackBar(res, context);
     } else {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (contest) => LoginScreen()),
+        MaterialPageRoute(builder: (contest) => const LoginScreen()),
       );
     }
   }
 
   void navigateToDisplayDoctor() {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (contest) => DisplayDoctor()),
+      MaterialPageRoute(builder: (contest) => const DisplayDoctor()),
     );
   }
 

@@ -5,13 +5,13 @@ import 'book_appointment.dart'; // Import the DoctorInformation class
 class DoctorDetailsScreen extends StatelessWidget {
   final DoctorInformation doctor;
 
-  DoctorDetailsScreen({required this.doctor});
+  const DoctorDetailsScreen({super.key, required this.doctor});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Doctor Details'),
+        title: const Text('Doctor Details'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

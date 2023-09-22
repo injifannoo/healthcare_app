@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../Providers/provider.dart';
 import '../models/model.dart';
 import 'doctor.dart';
@@ -9,7 +8,7 @@ import 'doctor.dart';
 class MyAppointmentScreen extends StatefulWidget {
   final DoctorInformation doctor;
 
-  MyAppointmentScreen({required this.doctor});
+  const MyAppointmentScreen({super.key, required this.doctor});
 
   @override
   _MyAppointmentScreenState createState() => _MyAppointmentScreenState();
@@ -47,7 +46,7 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
             ),
             DropdownButton<DateTime>(
               value: selectedDate,
-              hint: Text('Select a date'),
+              hint: const Text('Select a date'),
               onChanged: (newDate) {
                 setState(() {
                   selectedDate = newDate;
@@ -66,7 +65,7 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
             // Inside your _MyAppointmentScreenState class
             DropdownButton<String>(
               value: selectedTimeRange,
-              hint: Text('Select a time range'),
+              hint: const Text('Select a time range'),
               onChanged: (newTimeRange) {
                 print(
                     "Available Time Ranges: ${widget.doctor.availableTimeRanges}");

@@ -9,7 +9,6 @@ import 'package:healthcare_app/utils/colors.dart';
 import 'package:healthcare_app/utils/image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import '../Providers/provider.dart';
 
 class AddPost extends StatefulWidget {
   const AddPost({super.key});
@@ -32,11 +31,12 @@ class _AddPostState extends State<AddPost> {
     });
     try {
       String res = await postMethod().uploadPost(
-          description: _descriptionController.text,
-          uid: uid,
-          name: name,
-          profileImage: profileImage,
-          file: _file!);
+        description: _descriptionController.text,
+        uid: uid,
+        name: name,
+        profileImage: profileImage,
+        file: _file!,
+      );
       if (res == 'success') {
         setState(() {
           isLoading = false;
@@ -119,6 +119,12 @@ class _AddPostState extends State<AddPost> {
   }
 
   @override
+  void dispose() {
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     final Users? currentUser = userProvider.currentUser;
@@ -140,7 +146,10 @@ class _AddPostState extends State<AddPost> {
                 title: const Text('Post to'),
                 actions: [
                   TextButton(
-                    onPressed: () => postImage,
+                    onPressed: () => postImage(
+                        currentUser!.uid,
+                        currentUser.name,
+                        currentUser.photoUrl), //attention here
                     child: const Text(
                       'Post',
                       style: TextStyle(

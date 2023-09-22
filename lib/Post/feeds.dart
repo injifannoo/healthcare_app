@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:healthcare_app/Chat/page/chats_page.dart';
 import 'package:healthcare_app/utils/utils.dart';
 import 'post.dart';
 
@@ -18,15 +18,35 @@ class Feed extends StatelessWidget {
           color: primaryColor,
           height: 12,
         ),
+        leading: IconButton(
+          onPressed: () => const AddPost(),
+          icon: const Icon(Icons.post_add_outlined),
+        ),
         actions: [
           IconButton(
-              onPressed: () {}, icon: const Icon(Icons.messenger_outline))
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (_) => const ChatsPage()));
+              },
+              icon: const Icon(Icons.messenger_outline))
         ],
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('users').snapshots(),
-        builder: (context, snapshot) => PostCard(),
-      ),
+          stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+          builder: (context,
+              AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) => PostCard(
+                snap: snapshot.data!.docs[index].data(),
+              ),
+            );
+          }),
     );
   }
 }

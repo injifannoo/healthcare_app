@@ -3,9 +3,10 @@ import 'package:provider/provider.dart';
 import '../Providers/provider.dart';
 import '../models/model.dart';
 import 'doctor.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class DisplayDoctor extends StatefulWidget {
+  const DisplayDoctor({super.key});
+
   @override
   State<DisplayDoctor> createState() => _DisplayDoctorState();
 }

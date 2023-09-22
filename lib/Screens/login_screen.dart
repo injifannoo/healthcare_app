@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:healthcare_app/Screens/display_current_user.dart';
+import 'package:healthcare_app/home.dart';
+import 'package:healthcare_app/home_of_doctor.dart';
 //import 'package:flutter_svg/flutter_svg.dart';
 import 'package:healthcare_app/widgets.dart';
 //import 'package:provider/provider.dart';
 export '../utils/image.dart';
 import '../Auntethication/auntethication.dart';
-import '../responsive/responsive.dart';
 import '../utils/utils.dart';
 import 'screen.dart';
 import '../Doctor/doctor.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({
+  const LoginScreen({
     super.key,
   });
 
@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (contest) => const DisplayCurrentUser(),
+          builder: (contest) => const Home(),
         ),
       );
     }
@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (contest) => DisplayDoctor(),
+          builder: (contest) => const HomeOfDoctor(),
         ),
       );
     }

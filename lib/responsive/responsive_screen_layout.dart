@@ -23,8 +23,8 @@ class _ResponsiveScreenLayoutState extends State<ResponsiveScreenLayout> {
   }
 
   addData() async {
-    UserProvider _userProvider = Provider.of(context, listen: false);
-    await _userProvider.fetchCurrentUser;
+    UserProvider userProvider = Provider.of(context, listen: false);
+    userProvider.fetchCurrentUser;
   }
 
   @override

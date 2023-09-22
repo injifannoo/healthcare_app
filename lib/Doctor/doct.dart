@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import '../Auntethication/storage.dart';
 import '../models/model.dart' as model;
-import 'package:time_range_picker/time_range_picker.dart';
 
 class Doct {
   final FirebaseAuth _docAuth = FirebaseAuth.instance;
@@ -80,6 +79,7 @@ class Doct {
           doctorId: cred.user!.uid,
           availableDates: availableDates,
           availableTimeRanges: availableTimeRanges,
+          lastMessageTime: DateTime.now().toIso8601String(),
         );
         _firestoreOfDoctor
             .collection('Doctor')

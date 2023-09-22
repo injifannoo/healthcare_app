@@ -3,11 +3,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:healthcare_app/Auntethication/auth.dart';
 import 'package:healthcare_app/utils/colors.dart';
-import 'package:healthcare_app/utils/image.dart';
 import 'package:healthcare_app/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../responsive/responsive.dart';
 import 'screen.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -72,7 +70,7 @@ class _LoginScreenState extends State<SignUpScreen> {
     } else {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (contest) {
-          return LoginScreen();
+          return const LoginScreen();
         }),
       );
     }
@@ -80,7 +78,7 @@ class _LoginScreenState extends State<SignUpScreen> {
 
   void navigateToLoginUser() {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (contest) => LoginScreen()),
+      MaterialPageRoute(builder: (contest) => const LoginScreen()),
     );
   }
 

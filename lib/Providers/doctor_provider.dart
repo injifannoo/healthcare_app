@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../models/model.dart';
-import '../models/user.dart';
 
 class DoctorProvider with ChangeNotifier {
   List<DoctorInformation> _doctors = [];
@@ -13,25 +11,12 @@ class DoctorProvider with ChangeNotifier {
 
   Future<void> fetchDoctors() async {
     try {
-      QuerySnapshot usersSnapshot =
-          await FirebaseFirestore.instance.collection('Doctor').get();
+      QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
+          .collection('Doctor')
+          .orderBy(DoctorField.lastMessageTime, descending: true)
+          .get();
       List<DoctorInformation> doctors = [];
       for (QueryDocumentSnapshot userSnapshot in usersSnapshot.docs) {
-        // Get the data map from the snapshot
-        // Map<String, dynamic> userData =
-        //     userSnapshot.data() as Map<String, dynamic>;
-
-        // Check if the 'availableDates' field exists in the data map
-        // if (userData.containsKey('availableDates') ||
-        //     userData.containsKey('availableTimeRanges')) {
-        //   // Retrieve the list data
-        //   List<dynamic> availableDatesData = userData['availableDates'];
-        //   List<dynamic> availableTimeRange = userData['availableDates'];
-
-        //   // Cast the list elements to strings
-        //   List<String> availableDates = List<String>.from(availableDatesData);
-        //   List<String> availableTimeRanges =
-        //       List<String>.from(availableTimeRange);
         Map<String, dynamic> userData =
             userSnapshot.data() as Map<String, dynamic>;
         String name = userData['name'] ?? '';
@@ -48,21 +33,22 @@ class DoctorProvider with ChangeNotifier {
         String gender = userData['gender'] ?? '';
         String language = userData['language'] ?? '';
         String speciality = userData['speciality'] ?? '';
+        String lastMessageTime = userData['lastMessageTime'] ?? '';
 
         DoctorInformation doctor = DoctorInformation(
-          name: name,
-          email: email,
-          password: password,
-          availableDates: availableDates,
-          availableTimeRanges: availableTimeRanges,
-          contact: contact,
-          docPhotoUrl: docPhotoUrl,
-          doctorDoc: doctorDoc,
-          doctorId: doctorId,
-          gender: gender,
-          language: language,
-          speciality: speciality,
-        );
+            name: name,
+            email: email,
+            password: password,
+            availableDates: availableDates,
+            availableTimeRanges: availableTimeRanges,
+            contact: contact,
+            docPhotoUrl: docPhotoUrl,
+            doctorDoc: doctorDoc,
+            doctorId: doctorId,
+            gender: gender,
+            language: language,
+            speciality: speciality,
+            lastMessageTime: lastMessageTime);
         doctors.add(doctor);
       }
       _doctors = doctors;
@@ -92,6 +78,7 @@ class DoctorProvider with ChangeNotifier {
         gender: userSnapshot.get(' gender'),
         language: userSnapshot.get(' language'),
         speciality: userSnapshot.get('speciality'),
+        lastMessageTime: userSnapshot.get('lastMessageTime'),
       );
       notifyListeners();
     } catch (error) {

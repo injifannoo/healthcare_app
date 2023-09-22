@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare_app/models/user.dart';
-import 'package:healthcare_app/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 import '../Providers/provider.dart';
@@ -30,7 +29,7 @@ class _DisplayUserState extends State<DisplayCurrentUser> {
     final Users? currentUser = userProvider.currentUser;
 
     return Scaffold(
-      appBar: AppBar(title: Text('Current User')),
+      appBar: AppBar(title: const Text('Current User')),
       body: currentUser != null
           ? Card(
               child: Expanded(

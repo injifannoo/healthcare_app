@@ -1,10 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../Doctor/doctor.dart';
 import '../Providers/provider.dart';
-import '../models/model.dart' as model;
 import '../models/model.dart';
 
 class MobileScreenLayout extends StatefulWidget {

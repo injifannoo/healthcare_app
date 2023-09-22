@@ -1,7 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:time_range_picker/time_range_picker.dart';
+
 //import 'dart:html';
+class DoctorField {
+  static const String lastMessageTime = 'lastMessageTime';
+}
 
 class DoctorInformation {
   final String email;
@@ -23,6 +24,7 @@ class DoctorInformation {
   final String doctorDoc;
   List<dynamic> availableDates;
   List<dynamic> availableTimeRanges;
+  String? lastMessageTime;
 
   DoctorInformation({
     required this.email,
@@ -39,6 +41,7 @@ class DoctorInformation {
     required this.doctorDoc,
     required this.availableDates,
     required this.availableTimeRanges,
+    this.lastMessageTime,
     // required this.location,
     // required this.telemedicineAvailable,
     // required this.servicesOffered,
@@ -68,29 +71,62 @@ class DoctorInformation {
         'availableDates': availableDates,
         'availableTimeRanges':
             availableTimeRanges.map((range) => range).toList(),
+        'lastMessageTime': lastMessageTime,
       };
-  static DoctorInformation fromSnap(DocumentSnapshot snap) {
+  static DoctorInformation fromSnap(snap) {
     var snapshot = (snap.data() as Map<String, dynamic>);
+    Map<String, dynamic> userData = snapshot;
+    String name = userData['name'] ?? '';
+    String email = userData['email'] ?? '';
+    String password = userData['password'] ?? '';
+    List<String> availableDates =
+        (userData['availableDates'] ?? []).cast<String>();
+    List<String> availableTimeRanges =
+        (userData['availableTimeRanges'] ?? []).cast<String>();
+    String contact = userData['contact'] ?? '';
+    String docPhotoUrl = userData['docPhotoUrl'] ?? '';
+    String doctorDoc = userData['doctorDoc'] ?? '';
+    String doctorId = userData['doctorId'] ?? '';
+    String gender = userData['gender'] ?? '';
+    String language = userData['language'] ?? '';
+    String speciality = userData['speciality'] ?? '';
+    String lastMessageTime = userData['lastMessageTime'];
+
     return DoctorInformation(
-      email: snapshot['email'],
-      password: snapshot['password'],
-      name: snapshot['name'],
-      speciality: snapshot['speciality'],
-      // experience: snapshot['experience'],
-      // location: snapshot['location'],
-      language: snapshot['language'],
-      // telemedicineAvailable: snapshot['telemedicineAvailable'],
-      // servicesOffered: snapshot['servicesOffered'],
-      // education: snapshot['education'],
-      contact: snapshot['contactInformation'],
-      // available: snapshot['available'],
-      // pricing: snapshot['pricing'],
-      gender: snapshot['gender'],
-      docPhotoUrl: snapshot['docPhotoUrl'],
-      doctorDoc: snapshot['doctorDoc'],
-      doctorId: snapshot['doctorId'],
-      availableDates: snapshot['availableDates'],
-      availableTimeRanges: snapshot['availableTimesRanges'],
+      name: name,
+      email: email,
+      password: password,
+      availableDates: availableDates,
+      availableTimeRanges: availableTimeRanges,
+      contact: contact,
+      docPhotoUrl: docPhotoUrl,
+      doctorDoc: doctorDoc,
+      doctorId: doctorId,
+      gender: gender,
+      language: language,
+      speciality: speciality,
+      lastMessageTime: lastMessageTime,
     );
+    // return DoctorInformation(
+    //   email: snapshot['email'],
+    //   password: snapshot['password'],
+    //   name: snapshot['name'],
+    //   speciality: snapshot['speciality'],
+    //   // experience: snapshot['experience'],
+    //   // location: snapshot['location'],
+    //   language: snapshot['language'],
+    //   // telemedicineAvailable: snapshot['telemedicineAvailable'],
+    //   // servicesOffered: snapshot['servicesOffered'],
+    //   // education: snapshot['education'],
+    //   contact: snapshot['contactInformation'],
+    //   // available: snapshot['available'],
+    //   // pricing: snapshot['pricing'],
+    //   gender: snapshot['gender'],
+    //   docPhotoUrl: snapshot['docPhotoUrl'],
+    //   doctorDoc: snapshot['doctorDoc'],
+    //   doctorId: snapshot['doctorId'],
+    //   availableDates: snapshot['availableDates'],
+    //   availableTimeRanges: snapshot['availableTimesRanges'],
+    // );
   }
 }

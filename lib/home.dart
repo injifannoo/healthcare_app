@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:healthcare_app/Chat/page/chats_page.dart';
+import 'package:healthcare_app/Post/feeds.dart';
 
 import 'Doctor/doctor.dart';
 
@@ -14,9 +16,9 @@ class _MyHomePageState extends State<Home> {
   int _currentPage = 0;
   static List<Widget> pages = <Widget>[
     const Home(),
-    DisplayDoctor(),
-    //Services(),
-    //Checkin(),
+    const DisplayDoctor(),
+    const Feed(),
+    const ChatsPage(),
   ];
   void _onItemTapped(int index) {
     setState(() {
@@ -28,6 +30,7 @@ class _MyHomePageState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
         title: const Text('Healthcare App'),
       ),
       body: pages[_currentPage],
@@ -44,16 +47,15 @@ class _MyHomePageState extends State<Home> {
             label: 'Doctors',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.medication),
-            label: 'Check-in',
+            icon: Icon(Icons.post_add_outlined),
+            label: 'Posts',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.health_and_safety),
-            label: 'Doctor',
+            icon: Icon(Icons.message_outlined),
+            label: 'Chat',
           ),
         ],
       ),
-      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
