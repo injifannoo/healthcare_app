@@ -33,6 +33,8 @@ class DoctorProvider with ChangeNotifier {
         String gender = userData['gender'] ?? '';
         String language = userData['language'] ?? '';
         String speciality = userData['speciality'] ?? '';
+        String role = userData['role'] ?? '';
+
         String lastMessageTime = userData['lastMessageTime'] ?? '';
 
         DoctorInformation doctor = DoctorInformation(
@@ -48,6 +50,7 @@ class DoctorProvider with ChangeNotifier {
             gender: gender,
             language: language,
             speciality: speciality,
+            role: role,
             lastMessageTime: lastMessageTime);
         doctors.add(doctor);
       }
@@ -78,11 +81,12 @@ class DoctorProvider with ChangeNotifier {
         gender: userSnapshot.get(' gender'),
         language: userSnapshot.get(' language'),
         speciality: userSnapshot.get('speciality'),
+        role: userSnapshot.get('role'),
         lastMessageTime: userSnapshot.get('lastMessageTime'),
       );
       notifyListeners();
     } catch (error) {
-      print('Error fetching current user: $error');
+      print('Error fetching current doctor: $error');
     }
   }
 }

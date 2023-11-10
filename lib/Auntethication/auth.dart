@@ -26,7 +26,8 @@ class Auth {
     required String email,
     required String password,
     required String name,
-    required Uint8List file,
+    required Uint8List? file,
+    required String role,
     // required String address,
     // required String dateOfBirth,
     // required String gender,
@@ -40,7 +41,7 @@ class Auth {
             email: email, password: password);
 
         String photoUrl =
-            await Storage().uploadImageToStorage('profilePics', file, false);
+            await Storage().uploadImageToStorage('profilePics', file!, false);
         //add user info to database
         model.Users user = model.Users(
           email: email,
@@ -48,9 +49,10 @@ class Auth {
           name: name,
           photoUrl: photoUrl,
           uid: cred.user!.uid,
-          lastMessageTime: DateTime.now(),
+          lastMessageTime: '',
           followers: [],
           following: [],
+          role: role,
           // address: address,
           // dateOfBirth: dateOfBirth,
           // gender: gender,

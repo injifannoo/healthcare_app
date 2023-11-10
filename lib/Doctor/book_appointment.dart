@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -75,12 +76,30 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                   print("Selected Time Range: $selectedTimeRange");
                 });
               },
+              // items: widget.doctor.availableTimeRanges
+              //     .map<DropdownMenuItem<String>>(
+              //   (timeRange) {
+              //     return DropdownMenuItem<String>(
+              //       value: timeRange,
+              //       child: Text(timeRange),
+              //     );
+              //   },
+              // ).toList(),
               items: widget.doctor.availableTimeRanges
                   .map<DropdownMenuItem<String>>(
                 (timeRange) {
+                  final startIdx = timeRange.indexOf("(") + 1;
+                  final endIdx = timeRange.lastIndexOf(")");
+                  final timeSubstring = timeRange.substring(startIdx, endIdx);
+                  final times = timeSubstring.split(") to ");
+
+                  final startTime = times[0].split("(").last.trim();
+                  final endTime = times[1].split("(").last.trim();
+
+                  final formattedTimeRange = '$startTime - $endTime';
                   return DropdownMenuItem<String>(
-                    value: timeRange,
-                    child: Text(timeRange),
+                    value: formattedTimeRange,
+                    child: Text(formattedTimeRange),
                   );
                 },
               ).toList(),
@@ -97,6 +116,17 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                     date: selectedDate!.toString(),
                     timeRange: selectedTimeRange!,
                   );
+                  // Remove the selected time range from the available time ranges
+                  widget.doctor.availableTimeRanges.remove(selectedTimeRange);
+
+                  // Update the Doctor collection to reflect the changes
+                  FirebaseFirestore.instance
+                      .collection('Doctor')
+                      .doc(widget.doctor.doctorId)
+                      .update({
+                    'availableTimeRanges':
+                        FieldValue.arrayRemove([selectedTimeRange]),
+                  });
 
                   Navigator.push(
                     context,

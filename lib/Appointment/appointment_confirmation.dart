@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:healthcare_app/Notification/notification.dart';
 // Import DateFormat from intl package
 import 'package:provider/provider.dart';
 import '../Providers/provider.dart';
 import '../models/model.dart';
 import 'app.dart'; // Import the DoctorInformation class
+import 'package:intl/intl.dart';
 
 class AppointmentConfirmationScreen extends StatefulWidget {
   final DoctorInformation doctor;
@@ -11,7 +13,8 @@ class AppointmentConfirmationScreen extends StatefulWidget {
   //final TimeOfDay selectedTime;
   final String selectedTimeRange;
 
-  const AppointmentConfirmationScreen({super.key, 
+  const AppointmentConfirmationScreen({
+    super.key,
     required this.doctor,
     //required this.appointment,
     required this.selectedDate,
@@ -31,6 +34,12 @@ class _AppointmentConfirmationScreenState
     super.initState();
     Provider.of<AppointmentsProvider>(context, listen: false)
         .fetchAppointment();
+  }
+
+// Function to format the date (You can customize this as needed)
+  String _formatDate(DateTime date) {
+    final formattedDate = DateFormat('MMMM d, yyyy').format(date);
+    return formattedDate;
   }
 
   @override
@@ -53,20 +62,57 @@ class _AppointmentConfirmationScreenState
             const SizedBox(height: 20),
             Text(
               'Doctor: ${widget.doctor.name}',
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(
+                fontSize: 18,
+                color: Colors.green, // Change the text color to green
+                fontWeight: FontWeight.bold, // Make the text bold
+                fontStyle: FontStyle.italic, // Add italic style
+                decoration: TextDecoration.underline, // Underline the text
+                decorationColor:
+                    Colors.orange, // Set the underline color to orange
+                decorationThickness: 2, // Set the underline thickness),
+              ),
             ),
+            //         Text(
+            //           'Doctor: ${widget.doctor.doctorId}',
+            //           style: const TextStyle(
+            //           fontSize: 18,
+            // color: Colors.green,  // Change the text color to green
+            // fontWeight: FontWeight.bold,  // Make the text bold
+            // fontStyle: FontStyle.italic,  // Add italic style
+            // decoration: TextDecoration.underline,  // Underline the text
+            // decorationColor: Colors.orange,  // Set the underline color to orange
+            // decorationThickness: 2,  // Set the underline thickness),
+            //         ),
+            //         ),
             Text(
-              'Doctor: ${widget.doctor.doctorId}',
-              style: const TextStyle(fontSize: 18),
+              'Date: ${(widget.doctor.availableDates)}',
+              style: const TextStyle(
+                fontSize: 18,
+                color: Colors.blue, // Change the text color to blue
+                fontWeight: FontWeight.bold, // Make the text bold
+                fontStyle: FontStyle.italic, // Add italic style
+                decoration: TextDecoration.underline, // Underline the text
+                decorationColor:
+                    Colors.orange, // Set the underline color to orange
+                decorationThickness: 2, // Set the underline thickness
+              ),
             ),
-            Text(
-              'Date: ${widget.doctor.availableDates}', // Format the date
-              style: const TextStyle(fontSize: 18),
-            ),
+
             Text(
               'Time: ${widget.doctor.availableTimeRanges}',
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(
+                fontSize: 18,
+                color: Colors.green, // Change the text color to green
+                fontWeight: FontWeight.bold, // Make the text bold
+                fontStyle: FontStyle.italic, // Add italic style
+                decoration: TextDecoration.underline, // Underline the text
+                decorationColor:
+                    Colors.orange, // Set the underline color to orange
+                decorationThickness: 2, // Set the underline thickness
+              ),
             ),
+
             const SizedBox(height: 20),
             const Text(
               'Thank you for booking your appointment!',
@@ -90,6 +136,17 @@ class _AppointmentConfirmationScreenState
                 );
               },
               child: const Text('My Appointment'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MyNotification(),
+                  ),
+                );
+              },
+              child: const Text('Set Reminder'),
             ),
           ],
         ),

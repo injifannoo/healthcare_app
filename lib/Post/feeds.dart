@@ -14,39 +14,48 @@ class Feed extends StatelessWidget {
         backgroundColor: mobileBackgroundColor,
         centerTitle: false,
         title: Image.asset(
-          'assets/images/health.jpeg',
+          'assets/images/health.jpg',
           color: primaryColor,
           height: 12,
         ),
         leading: IconButton(
-          onPressed: () => const AddPost(),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => const AddPost()));
+          },
           icon: const Icon(Icons.post_add_outlined),
         ),
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => const ChatsPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const ChatsPage()));
               },
               icon: const Icon(Icons.messenger_outline))
         ],
       ),
-      body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('posts').snapshots(),
-          builder: (context,
-              AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasData) {
             return ListView.builder(
-              itemCount: snapshot.data!.docs.length,
+              itemCount: snapshot.data?.docs.length ?? 0,
               itemBuilder: (context, index) => PostCard(
-                snap: snapshot.data!.docs[index].data(),
+                snap: snapshot.data?.docs[index].data(),
               ),
             );
-          }),
+          } else {
+            return const Center(
+              child: Text('No data available'),
+            );
+          }
+        },
+      ),
     );
   }
 }

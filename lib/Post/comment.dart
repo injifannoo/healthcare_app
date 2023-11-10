@@ -27,7 +27,7 @@ class _CommentScreenState extends State<CommentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Users? user = Provider.of<UserProvider>(context).currentUser;
+    final Users user = Provider.of<UserProvider>(context).getCurrentUser;
 
     return Scaffold(
       appBar: AppBar(
@@ -97,7 +97,7 @@ class _CommentScreenState extends State<CommentScreen> {
                     padding:
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                     child: const Text(
-                      'Post',
+                      'Comment',
                       style: TextStyle(color: Colors.blueAccent),
                     )),
               ),

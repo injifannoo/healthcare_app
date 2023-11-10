@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare_app/Post/like_animation.dart';
 import 'package:healthcare_app/Post/post.dart';
 import 'package:healthcare_app/Providers/provider.dart';
+import 'package:healthcare_app/models/user.dart';
 import 'package:healthcare_app/utils/colors.dart';
 import 'package:healthcare_app/utils/image.dart';
 import 'package:intl/intl.dart';
@@ -25,11 +27,6 @@ class PostCard extends StatefulWidget {
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
   int commentLen = 0;
-  @override
-  void initState() {
-    super.initState();
-    getComments();
-  }
 
   void getComments() async {
     try {
@@ -45,9 +42,26 @@ class _PostCardState extends State<PostCard> {
     setState(() {});
   }
 
+  // @override
+  // Widget build(BuildContext context) {
+  //   final model.Users user = Provider.of<UserProvider>(context).getCurrentUser;
+  @override
+  void initState() {
+    super.initState();
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    print("User current id is ${userId}");
+    if (userId != null) {
+      Provider.of<UserProvider>(context, listen: false)
+          .fetchCurrentUser(userId);
+    }
+    getComments();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final model.Users user = Provider.of<UserProvider>(context).getCurrentUser;
+    final userProvider = Provider.of<UserProvider>(context);
+    final Users user = userProvider.getCurrentUser;
+
     return Container(
       color: mobileBackgroundColor,
       padding: const EdgeInsets.symmetric(vertical: 10),

@@ -44,7 +44,7 @@ class ChatPage extends StatelessWidget {
   Widget buildText(String text) => Center(
         child: Text(
           text,
-          style: const TextStyle(fontSize: 24, color: Colors.white),
+          style: const TextStyle(fontSize: 24, color: Colors.blueAccent),
         ),
       );
 }

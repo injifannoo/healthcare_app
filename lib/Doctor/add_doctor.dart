@@ -8,9 +8,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:time_range_picker/time_range_picker.dart';
 
 class AddDoctor extends StatefulWidget {
-  const AddDoctor({
-    super.key,
-  });
+  final String? selectedRole;
+
+  const AddDoctor({super.key, this.selectedRole});
 
   @override
   State<AddDoctor> createState() => _LoginScreenState();
@@ -24,6 +24,7 @@ class _LoginScreenState extends State<AddDoctor> {
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _roleController = TextEditingController();
   Uint8List? _image;
   Uint8List? _doctorDoc;
   final List<String> availableDates = [];
@@ -41,13 +42,14 @@ class _LoginScreenState extends State<AddDoctor> {
     _genderController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _roleController.dispose();
   }
 
   void selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
     setState(() {
       _image = im;
-      print('setstate of user image is working');
+      print('setstate of doctor profile image is working');
     });
   }
 
@@ -56,11 +58,11 @@ class _LoginScreenState extends State<AddDoctor> {
 
     setState(() {
       _doctorDoc = docPic;
-      print('setstate of doctor image is working');
+      print('setstate of doctor doc is working');
     });
   }
 
-  void addDoctor() async {
+  void addDoctor(String? selectedRole) async {
     setState(() {
       _isLoading = true;
       print('state in add doctor');
@@ -78,6 +80,7 @@ class _LoginScreenState extends State<AddDoctor> {
       docIdFile: _doctorDoc!,
       availableDates: availableDates,
       availableTimeRanges: availableTimeRanges,
+      role: selectedRole!,
       doctorId: '',
     );
     setState(() {
@@ -113,6 +116,28 @@ class _LoginScreenState extends State<AddDoctor> {
     }
   }
 
+  // void _addAvailableTimeRange() async {
+  //   TimeOfDay now = TimeOfDay.now();
+  //   TimeOfDay initialStartTime = now;
+  //   TimeOfDay initialEndTime = now.replacing(hour: now.hour + 1);
+
+  //   TimeRange? pickedTimeRange = await showTimeRangePicker(
+  //     context: context,
+  //     start: initialStartTime,
+  //     end: initialEndTime,
+  //     backgroundWidget: const SizedBox(),
+  //     labelStyle: TextStyle(
+  //       height: 100,
+  //     ),
+  //   );
+
+  //   if (pickedTimeRange != null) {
+  //     setState(() {
+  //       availableTimeRanges.add(pickedTimeRange.toString());
+  //       print("pick Time");
+  //     });
+  //   }
+  //}
   void _addAvailableTimeRange() async {
     TimeOfDay now = TimeOfDay.now();
     TimeOfDay initialStartTime = now;
@@ -122,11 +147,18 @@ class _LoginScreenState extends State<AddDoctor> {
       context: context,
       start: initialStartTime,
       end: initialEndTime,
+      backgroundWidget: const SizedBox(),
+      labelStyle: TextStyle(
+        height: 100,
+      ),
     );
 
     if (pickedTimeRange != null) {
+      String formattedTimeRange =
+          '${pickedTimeRange.startTime.format(context)} - ${pickedTimeRange.endTime.format(context)}';
+
       setState(() {
-        availableTimeRanges.add(pickedTimeRange.toString());
+        availableTimeRanges.add(formattedTimeRange);
         print("pick Time");
       });
     }
@@ -170,7 +202,7 @@ class _LoginScreenState extends State<AddDoctor> {
                 //Flexible(flex: 1, child: Container()),
                 //image
                 Image.asset(
-                  'assets/images/health.jpeg',
+                  'assets/images/health.jpg',
                   color: primaryColor,
                   height: 64,
                 ),
@@ -265,9 +297,11 @@ class _LoginScreenState extends State<AddDoctor> {
                     return Text(availableDates[index]);
                   },
                 ),
-                ElevatedButton(
-                    onPressed: _addAvailableTimeRange,
-                    child: const Text('Add Available Time Range')),
+                SizedBox(
+                  child: ElevatedButton(
+                      onPressed: _addAvailableTimeRange,
+                      child: const Text('Add Available Time Range')),
+                ),
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: availableTimeRanges.length,
@@ -307,7 +341,7 @@ class _LoginScreenState extends State<AddDoctor> {
                 Flexible(flex: 1, child: Container()),
 
                 InkWell(
-                  onTap: addDoctor,
+                  onTap: () => addDoctor(widget.selectedRole),
                   child: Container(
                     width: double.infinity,
                     alignment: Alignment.center,

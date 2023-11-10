@@ -1,7 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../api/firebase_api.dart';
 import 'package:flutter/material.dart';
-
 
 class NewMessageWidget extends StatefulWidget {
   final String idUser;
@@ -18,11 +18,21 @@ class NewMessageWidget extends StatefulWidget {
 class _NewMessageWidgetState extends State<NewMessageWidget> {
   final _controller = TextEditingController();
   String message = '';
+  //String recieverID = '';
+  final userId = FirebaseAuth.instance.currentUser!.uid;
+  String groupChatId = '';
 
   void sendMessage() async {
+    String peerId = widget.idUser;
+    if (userId.compareTo(peerId) < 0) {
+      groupChatId = '${userId + peerId}';
+    } else {
+      groupChatId = '${peerId + userId}';
+    }
     FocusScope.of(context).unfocus();
-    await FirebaseApi.uploadMessage(widget.idUser, message);
+    await FirebaseApi.uploadMessage(groupChatId, widget.idUser, message);
     _controller.clear();
+    print("GroupchatId in newMessageWidget: ${groupChatId}");
   }
 
   @override

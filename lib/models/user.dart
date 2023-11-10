@@ -3,7 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserField {
-  static String lastMessageTime = 'lastMessageTime';
+  static String lastMessageUserTime = 'lastMessageTime';
 }
 
 class Users {
@@ -11,10 +11,11 @@ class Users {
   final String password;
   final String name;
   final String photoUrl;
-  final DateTime? lastMessageTime;
+  final String lastMessageTime;
   final String uid;
   final List followers;
   final List following;
+  final String role;
   //  final String address;
   // final String dateOfBirth;
   // final String gender;
@@ -29,6 +30,7 @@ class Users {
     required this.uid,
     required this.followers,
     required this.following,
+    required this.role,
     // required this.address,
     // required this.phone,
     // required this.dateOfBirth,
@@ -40,9 +42,11 @@ class Users {
         'password': password,
         'name': name,
         'photoUrl': photoUrl,
-        'lastMessageTime': fromDateTimeToJson(lastMessageTime!),
+        'lastMessageTime': lastMessageTime!,
         "followers": followers,
         "following": following,
+        "role": role,
+        "uid": uid,
         // 'address': address,
         // 'dateOfBirth': dateOfBirth,
         // 'gender': gender,
@@ -56,11 +60,12 @@ class Users {
       password: snapshot['password'] ?? '',
       name: snapshot['name'],
       photoUrl: snapshot['photoUrl'] ?? '',
-      lastMessageTime:
-          toDateTime(snapshot['lastMessageTime'] ?? ''), //'uid': uid,
-      uid: snapshot['uid'] ?? '',
+      lastMessageTime: snapshot['lastMessageTime'] ?? '', //'uid': uid,
+      uid: snapshot['uid'],
       followers: snapshot["followers"] ?? '',
       following: snapshot["following"] ?? '',
+      role: snapshot["role"] ?? '',
+
       // address: snapshot['address'],
       // dateOfBirth: snapshot['dateOfBirth'],
       // gender: snapshot['gender'],

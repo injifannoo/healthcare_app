@@ -45,6 +45,7 @@ class Doct {
     required String doctorId,
     required List<String> availableDates,
     required List<String> availableTimeRanges,
+    required String role,
   }) async {
     String res = 'Some error';
     try {
@@ -57,7 +58,7 @@ class Doct {
         String profilePictureUrl =
             await Storage().uploadImageToStorage('doctorsPics', file, false);
         String doctordoc = await Storage()
-            .uploadImageToStorage('doctorsPics', docIdFile, false);
+            .uploadImageToStorage('doctorsDocs', docIdFile, false);
         model.DoctorInformation doctor = model.DoctorInformation(
           docPhotoUrl: profilePictureUrl,
           doctorDoc: doctordoc,
@@ -79,6 +80,7 @@ class Doct {
           doctorId: cred.user!.uid,
           availableDates: availableDates,
           availableTimeRanges: availableTimeRanges,
+          role: role,
           lastMessageTime: DateTime.now().toIso8601String(),
         );
         _firestoreOfDoctor

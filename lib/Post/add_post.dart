@@ -25,6 +25,7 @@ class _AddPostState extends State<AddPost> {
     String uid,
     String name,
     String profileImage,
+    DateTime datePublished,
   ) async {
     setState(() {
       isLoading == true;
@@ -35,6 +36,7 @@ class _AddPostState extends State<AddPost> {
         uid: uid,
         name: name,
         profileImage: profileImage,
+        datePublished: datePublished,
         file: _file!,
       );
       if (res == 'success') {
@@ -109,9 +111,16 @@ class _AddPostState extends State<AddPost> {
   }
 
   @override
+  void dispose() {
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     final userId = FirebaseAuth.instance.currentUser?.uid;
+    print("User current id is ${userId}");
     if (userId != null) {
       Provider.of<UserProvider>(context, listen: false)
           .fetchCurrentUser(userId);
@@ -119,21 +128,22 @@ class _AddPostState extends State<AddPost> {
   }
 
   @override
-  void dispose() {
-    _descriptionController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    final Users? currentUser = userProvider.currentUser;
+    final Users currentUser = userProvider.getCurrentUser;
+
+    // @override
+    // Widget build(BuildContext context) {
+    //   final userProvider = Provider.of<UserProvider>(context);
+    //   final Users? currentUser = userProvider.currentUser;
 
     return _file == null
-        ? Center(
-            child: IconButton(
-              icon: const Icon(Icons.upload),
-              onPressed: () => _selectImage(context),
+        ? Material(
+            child: Center(
+              child: IconButton(
+                icon: const Icon(Icons.upload),
+                onPressed: () => _selectImage(context),
+              ),
             ),
           )
         : Scaffold(
@@ -147,9 +157,10 @@ class _AddPostState extends State<AddPost> {
                 actions: [
                   TextButton(
                     onPressed: () => postImage(
-                        currentUser!.uid,
+                        currentUser.uid,
                         currentUser.name,
-                        currentUser.photoUrl), //attention here
+                        currentUser.photoUrl,
+                        DateTime.now()), //attention here
                     child: const Text(
                       'Post',
                       style: TextStyle(
@@ -172,7 +183,7 @@ class _AddPostState extends State<AddPost> {
                         )),
                   const Divider(),
                   CircleAvatar(
-                    backgroundImage: NetworkImage(currentUser!.photoUrl),
+                    backgroundImage: NetworkImage(currentUser.photoUrl),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.4,

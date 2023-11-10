@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:healthcare_app/Screens/signUpOne.dart';
 import 'package:healthcare_app/home.dart';
 import 'package:healthcare_app/home_of_doctor.dart';
 //import 'package:flutter_svg/flutter_svg.dart';
@@ -33,98 +36,286 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
   }
 
+  // void loginUser() async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+
+  //   String res = await Auth().loginUser(
+  //     email: _emailController.text,
+  //     password: _passwordController.text,
+  //   );
+
+  //   setState(() {
+  //     _isLoading = false;
+  //   });
+
+  //   if (res != 'success') {
+  //     // ignore: use_build_context_synchronously
+  //     showSnackBar(res, context);
+  //   } else {
+  //     // ignore: use_build_context_synchronously
+  //     Navigator.of(context).pushReplacement(
+  //       MaterialPageRoute(
+  //         builder: (contest) => const Home(),
+  //       ),
+  //     );
+  //   }
+  // }
+
+  // void loginDoctor() async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+
+  //   String res = await Doct().loginDoctor(
+  //     email: _emailController.text,
+  //     password: _passwordController.text,
+  //   );
+  //   setState(() {
+  //     _isLoading = false;
+  //   });
+
+  //   if (res != 'success') {
+  //     // ignore: use_build_context_synchronously
+  //     showSnackBar(res, context);
+  //   } else {
+  //     // ignore: use_build_context_synchronously
+  //     Navigator.of(context).pushReplacement(
+  //       MaterialPageRoute(
+  //         builder: (contest) => const HomeOfDoctor(),
+  //       ),
+  //     );
+  //   }
+  // }
+  // void loginUser() async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+
+  //   try {
+  //     UserCredential userCredential =
+  //         await FirebaseAuth.instance.signInWithEmailAndPassword(
+  //       email: _emailController.text,
+  //       password: _passwordController.text,
+  //     );
+
+  //     String userId = userCredential.user!.uid;
+
+  //     DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+  //         .collection('users')
+  //         .doc(userId)
+  //         .get();
+  //     String userRole = userSnapshot.get('role');
+
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+
+  //     if (userRole == 'doctor') {
+  //       Navigator.of(context).pushReplacement(
+  //         MaterialPageRoute(
+  //           builder: (context) => const HomeOfDoctor(),
+  //         ),
+  //       );
+  //     } else {
+  //       Navigator.of(context).pushReplacement(
+  //         MaterialPageRoute(
+  //           builder: (context) => const Home(),
+  //         ),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //     showSnackBar(e.toString(), context);
+  //   }
+  // }
+
+  // void loginDoctor() async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+
+  //   try {
+  //     UserCredential userCredential =
+  //         await FirebaseAuth.instance.signInWithEmailAndPassword(
+  //       email: _emailController.text,
+  //       password: _passwordController.text,
+  //     );
+
+  //     String userId = userCredential.user!.uid;
+
+  //     DocumentSnapshot doctorSnapshot = await FirebaseFirestore.instance
+  //         .collection('Doctor')
+  //         .doc(userId)
+  //         .get();
+  //     String userRole = doctorSnapshot.get('role');
+
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+
+  //     if (userRole == 'doctor') {
+  //       Navigator.of(context).pushReplacement(
+  //         MaterialPageRoute(
+  //           builder: (context) => const HomeOfDoctor(),
+  //         ),
+  //       );
+  //     } else {
+  //       Navigator.of(context).pushReplacement(
+  //         MaterialPageRoute(
+  //           builder: (context) => const Home(),
+  //         ),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //     showSnackBar(e.toString(), context);
+  //   }
+  // }
   void loginUser() async {
     setState(() {
       _isLoading = true;
     });
 
-    String res = await Auth().loginUser(
-      email: _emailController.text,
-      password: _passwordController.text,
-    );
-
-    setState(() {
-      _isLoading = false;
-    });
-
-    if (res != 'success') {
-      // ignore: use_build_context_synchronously
-      showSnackBar(res, context);
-    } else {
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (contest) => const Home(),
-        ),
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
       );
-    }
-  }
 
-  void loginDoctor() async {
-    setState(() {
-      _isLoading = true;
-    });
+      String userId = userCredential.user!.uid;
 
-    String res = await Doct().loginDoctor(
-      email: _emailController.text,
-      password: _passwordController.text,
-    );
-    setState(() {
-      _isLoading = false;
-    });
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+      DocumentSnapshot doctorSnapshot = await FirebaseFirestore.instance
+          .collection('Doctor')
+          .doc(userId)
+          .get();
 
-    if (res != 'success') {
-      // ignore: use_build_context_synchronously
-      showSnackBar(res, context);
-    } else {
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (contest) => const HomeOfDoctor(),
-        ),
-      );
+      String userRole = userSnapshot.exists ? userSnapshot.get('role') : '';
+      String doctorRole =
+          doctorSnapshot.exists ? doctorSnapshot.get('role') : '';
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (userRole == 'doctor' || doctorRole == 'doctor') {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const HomeOfDoctor(),
+          ),
+        );
+      } else {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const Home(),
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      showSnackBar(e.toString(), context);
     }
   }
 
   void navigateTosignUpUser() {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (contest) => const SignUpScreen()),
+      MaterialPageRoute(builder: (contest) => SignUpOne()),
     );
   }
 
   void navigateToSignUpDoctor() {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (contest) => const AddDoctor()),
+      MaterialPageRoute(builder: (contest) => SignUpOne()),
+    );
+  }
+
+// Function to send a password reset email
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      // Password reset email sent successfully
+    } catch (e) {
+      // Handle any errors that occur during the password reset process
+      print("Error sending password reset email: $e");
+    }
+  }
+
+// Inside your LoginScreen widget, add a method to handle the password reset
+  void resetPassword() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        final TextEditingController emailController = TextEditingController();
+        return AlertDialog(
+          title: Text('Reset Password'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                controller: emailController,
+                decoration: InputDecoration(labelText: 'Email'),
+              ),
+              SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  // Call the sendPasswordResetEmail function
+                  sendPasswordResetEmail(emailController.text);
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          'Password reset email sent to ${emailController.text}'),
+                    ),
+                  );
+                },
+                child: Text('Send Email'),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Login page'),
-        ),
-        body: SafeArea(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
-            width: double.infinity,
+      appBar: AppBar(
+        title: const Text('Login page'),
+      ),
+      body: SafeArea(
+        // child: SingleChildScrollView(
+        child: Container(
+          //padding: const EdgeInsets.all(100),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          width: double.infinity,
+          child: Center(
+            // child: Container(
+            //color: Colors.brown,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Flexible(flex: 1, child: Container()),
-                //image
-                Image.asset(
-                  'assets/images/health.jpeg',
-                  color: primaryColor,
-                  height: 64,
-                ),
-                const SizedBox(
-                  height: 64,
-                ),
+
                 //textinput for email
                 TextFieldInput(
-                    hintText: 'please input your Email',
-                    tectInputType: TextInputType.emailAddress,
-                    textEditingcontroller: _emailController),
+                  hintText: 'please input your Email',
+                  tectInputType: TextInputType.emailAddress,
+                  textEditingcontroller: _emailController,
+                ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -138,42 +329,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 24,
                 ),
-                Container(
-                  padding: const EdgeInsets.all(1), // Adjust padding as needed
-                  constraints: const BoxConstraints(
-                    minWidth: 500, // Minimum width of the dropdown box
-                    maxWidth: 500, // Maximum width of the dropdown box
-                  ),
-                  child: DropdownButton<String>(
-                    hint: const Text('select doctor or other'),
-                    iconSize: 40, // Adjust the size of the dropdown icon
-                    icon: const Icon(Icons.arrow_drop_down), // Dropdown icon
-                    value: selectedRole,
-                    onChanged: (newValue) {
-                      setState(
-                        () {
-                          // Update the state to trigger a rebuild
-                          selectedRole = newValue!;
-                        },
-                      );
-                    },
-                    items: <String>['doctor', 'other']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ),
 
                 const SizedBox(
                   height: 24,
                 ),
                 InkWell(
-                  onTap: selectedRole == 'other' ? loginUser : loginDoctor,
+                  onTap: loginUser,
                   child: Container(
-                    width: double.infinity,
+                    width: 200,
+                    height: 40,
                     alignment: Alignment.center,
                     decoration: const ShapeDecoration(
                         shape: RoundedRectangleBorder(
@@ -194,7 +358,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 10,
                 ),
+                ElevatedButton(
+                  onPressed: resetPassword,
+                  child: Text('Forgot Password?'),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 Flexible(flex: 2, child: Container()),
+
                 //signing up if don't have account
                 InkWell(
                   onTap: selectedRole == 'other'
@@ -206,6 +378,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: const Text('Don\'t have account?'),
+                      ),
+                      const SizedBox(
+                        width: 8,
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 8),
@@ -222,6 +397,10 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
           ),
-        ));
+        ),
+      ),
+      // ),
+      //)
+    );
   }
 }

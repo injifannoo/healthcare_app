@@ -47,6 +47,7 @@ class ChatBodyWidget extends StatelessWidget {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => ChatPage(user: user),
                 ));
+                print("to chatPage name ${user.name}");
               },
             ),
           );

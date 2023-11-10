@@ -25,7 +25,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    final Users? currentUser = userProvider.currentUser;
+    final Users? currentUser = userProvider.getCurrentUser;
 
     return Scaffold(
       appBar: AppBar(

@@ -1,4 +1,3 @@
-
 //import 'dart:html';
 class DoctorField {
   static const String lastMessageTime = 'lastMessageTime';
@@ -22,6 +21,8 @@ class DoctorInformation {
   // final String pricing;
   final String gender;
   final String doctorDoc;
+
+  final String role;
   List<dynamic> availableDates;
   List<dynamic> availableTimeRanges;
   String? lastMessageTime;
@@ -42,6 +43,7 @@ class DoctorInformation {
     required this.availableDates,
     required this.availableTimeRanges,
     this.lastMessageTime,
+    required this.role,
     // required this.location,
     // required this.telemedicineAvailable,
     // required this.servicesOffered,
@@ -72,6 +74,7 @@ class DoctorInformation {
         'availableTimeRanges':
             availableTimeRanges.map((range) => range).toList(),
         'lastMessageTime': lastMessageTime,
+        'role': role,
       };
   static DoctorInformation fromSnap(snap) {
     var snapshot = (snap.data() as Map<String, dynamic>);
@@ -91,6 +94,7 @@ class DoctorInformation {
     String language = userData['language'] ?? '';
     String speciality = userData['speciality'] ?? '';
     String lastMessageTime = userData['lastMessageTime'];
+    String role = userData['role'];
 
     return DoctorInformation(
       name: name,
@@ -106,6 +110,7 @@ class DoctorInformation {
       language: language,
       speciality: speciality,
       lastMessageTime: lastMessageTime,
+      role: role,
     );
     // return DoctorInformation(
     //   email: snapshot['email'],

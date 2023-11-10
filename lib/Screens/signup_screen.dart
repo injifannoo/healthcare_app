@@ -9,8 +9,11 @@ import 'package:image_picker/image_picker.dart';
 import 'screen.dart';
 
 class SignUpScreen extends StatefulWidget {
+  final String? selectedRole;
+
   const SignUpScreen({
     super.key,
+    this.selectedRole,
   });
 
   @override
@@ -25,6 +28,7 @@ class _LoginScreenState extends State<SignUpScreen> {
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _roleController = TextEditingController();
   Uint8List? _image;
   bool _isLoading = false;
 
@@ -38,6 +42,7 @@ class _LoginScreenState extends State<SignUpScreen> {
     _genderController.dispose();
     _nameController.dispose();
     _phoneController.dispose();
+    _roleController.dispose();
   }
 
   void selectImage() async {
@@ -48,7 +53,7 @@ class _LoginScreenState extends State<SignUpScreen> {
     });
   }
 
-  void signUpUser() async {
+  void signUpUser(String? selectedRole) async {
     setState(() {
       _isLoading = true;
     });
@@ -56,6 +61,7 @@ class _LoginScreenState extends State<SignUpScreen> {
       email: _emailController.text,
       password: _passwordController.text,
       name: _nameController.text,
+      role: selectedRole!,
       file: _image!,
       // address: _addressController.text,
       // dateOfBirth: _dateOfBirthController.text,
@@ -93,17 +99,9 @@ class _LoginScreenState extends State<SignUpScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 32),
             width: double.infinity,
             child: Column(
+              mainAxisSize: MainAxisSize.max,
               children: [
                 Flexible(flex: 1, child: Container()),
-                //image
-                Image.asset(
-                  'assets/images/health.jpeg',
-                  color: primaryColor,
-                  height: 64,
-                ),
-                const SizedBox(
-                  height: 64,
-                ),
                 //circular widget to accept and show our selected file
                 Stack(
                   children: [
@@ -138,6 +136,13 @@ class _LoginScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 20,
                 ),
+                TextFieldInput(
+                    hintText: 'please input your Email',
+                    tectInputType: TextInputType.emailAddress,
+                    textEditingcontroller: _emailController),
+                const SizedBox(
+                  height: 20,
+                ),
 
                 TextFieldInput(
                   hintText: 'please input your Password',
@@ -148,13 +153,9 @@ class _LoginScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                TextFieldInput(
-                    hintText: 'please input your Email',
-                    tectInputType: TextInputType.emailAddress,
-                    textEditingcontroller: _emailController),
-                const SizedBox(
-                  height: 20,
-                ),
+
+                //here dropdown for role
+
                 // TextFieldInput(
                 //     hintText: 'please input your address',
                 //     tectInputType: TextInputType.text,
@@ -188,9 +189,10 @@ class _LoginScreenState extends State<SignUpScreen> {
                   height: 24,
                 ),
                 InkWell(
-                  onTap: signUpUser,
+                  onTap: () => signUpUser(widget.selectedRole),
                   child: Container(
-                    width: double.infinity,
+                    width: 200,
+                    height: 40,
                     alignment: Alignment.center,
                     decoration: const ShapeDecoration(
                         shape: RoundedRectangleBorder(
@@ -222,6 +224,9 @@ class _LoginScreenState extends State<SignUpScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: const Text('Do you have account?'),
+                      ),
+                      const SizedBox(
+                        width: 8,
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 8),

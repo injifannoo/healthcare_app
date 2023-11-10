@@ -17,7 +17,7 @@ class MessageWidget extends StatelessWidget {
     const borderRadius = BorderRadius.all(radius);
 
     return Row(
-      mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment: isMe ? MainAxisAlignment.start : MainAxisAlignment.end,
       children: <Widget>[
         if (!isMe)
           CircleAvatar(
@@ -27,10 +27,12 @@ class MessageWidget extends StatelessWidget {
           margin: const EdgeInsets.all(16),
           constraints: const BoxConstraints(maxWidth: 140),
           decoration: BoxDecoration(
-            color: isMe ? Colors.grey[100] : Theme.of(context).canvasColor,
+            color: isMe ? Theme.of(context).canvasColor : Colors.blue,
             borderRadius: isMe
-                ? borderRadius.subtract(const BorderRadius.only(bottomRight: radius))
-                : borderRadius.subtract(const BorderRadius.only(bottomLeft: radius)),
+                ? borderRadius
+                    .subtract(const BorderRadius.only(bottomLeft: radius))
+                : borderRadius
+                    .subtract(const BorderRadius.only(bottomRight: radius)),
           ),
           child: buildMessage(),
         ),
@@ -40,12 +42,12 @@ class MessageWidget extends StatelessWidget {
 
   Widget buildMessage() => Column(
         crossAxisAlignment:
-            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            isMe ? CrossAxisAlignment.start : CrossAxisAlignment.end,
         children: <Widget>[
           Text(
             message.message,
-            style: TextStyle(color: isMe ? Colors.black : Colors.white),
-            textAlign: isMe ? TextAlign.end : TextAlign.start,
+            style: TextStyle(color: isMe ? Colors.blue : Colors.red),
+            textAlign: isMe ? TextAlign.start : TextAlign.end,
           ),
         ],
       );

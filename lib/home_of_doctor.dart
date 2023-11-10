@@ -1,11 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare_app/Appointment/my_appointment_page.dart';
+import 'package:healthcare_app/Chat%20U/page/chats_page2.dart';
 import 'package:healthcare_app/Chat/page/chats_page.dart';
+import 'package:healthcare_app/ChatUser/page/chats_page_user.dart';
 import 'package:healthcare_app/Post/feeds.dart';
+import 'package:healthcare_app/Screens/doctorProfile.dart';
+import 'package:healthcare_app/Screens/login_screen.dart';
+import 'package:healthcare_app/Screens/navBarDoc.dart';
 import 'package:healthcare_app/Screens/profile.dart';
 import 'package:healthcare_app/Screens/search.dart';
+import 'package:healthcare_app/inj.dart';
+import 'package:healthcare_app/models/post.dart';
 
+import 'Post/post.dart';
 
 class HomeOfDoctor extends StatefulWidget {
   const HomeOfDoctor({
@@ -18,14 +26,16 @@ class HomeOfDoctor extends StatefulWidget {
 class _MyHomePageState extends State<HomeOfDoctor> {
   int _currentPage = 0;
   static List<Widget> pages = <Widget>[
-    const HomeOfDoctor(),
-    const Feed(),
+    //const HomeOfDoctor(),
+    const WelcomePage(),
+    const AddPost(),
     const MyAppointmentPage(),
-    const ChatsPage(),
+    const ChatsPage2(),
     const SearchScreen(),
-    ProfileScreen(
-      uid: FirebaseAuth.instance.currentUser!.uid,
-    )
+    // ProfileScreen(
+    //   uid: FirebaseAuth.instance.currentUser!.uid,
+    // ),
+    const DoctorProfile()
   ];
   void _onItemTapped(int index) {
     setState(() {
@@ -36,11 +46,25 @@ class _MyHomePageState extends State<HomeOfDoctor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const NavBarDoc(),
       appBar: AppBar(
         title: const Text('Healthcare App'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const LoginScreen()),
+              );
+            },
+            icon: const Icon(Icons.logout_rounded),
+          ),
+        ],
       ),
       body: pages[_currentPage],
       bottomNavigationBar: BottomNavigationBar(
+        unselectedItemColor: Colors.blue,
+        selectedItemColor: Colors.orange,
         currentIndex: _currentPage,
         onTap: _onItemTapped,
         items: const [
@@ -49,15 +73,15 @@ class _MyHomePageState extends State<HomeOfDoctor> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.health_and_safety),
+            icon: Icon(Icons.post_add),
             label: 'Posts',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.medication),
+            icon: Icon(Icons.timer),
             label: 'My Appointment',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.health_and_safety),
+            icon: Icon(Icons.chat),
             label: 'Chat',
           ),
           BottomNavigationBarItem(

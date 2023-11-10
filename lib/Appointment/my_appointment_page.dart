@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:healthcare_app/Notification/notification.dart';
 import 'package:provider/provider.dart';
 
 import '../Providers/provider.dart';
@@ -59,7 +60,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
   @override
   void dispose() {
     // AwesomeNotification().actionSink.close();
-    //     AwesomeNotification().createSink.close();
+    // AwesomeNotification().createSink.close();
 
     super.dispose();
   }
@@ -73,45 +74,116 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
     final List<DoctorInformation> doc = doctors.doctors;
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('My Appointments'),
-        ),
-        body: Column(
-          children: [
-            ListView.builder(
-              itemCount: app.length,
-              itemBuilder: (context, index) {
-                // Find the corresponding doctor based on doctorId from the appointment
-                DoctorInformation doctor = doc.firstWhere(
-                  (doctor) => doctor.doctorId == app[index].doctorId,
-                );
+      appBar: AppBar(
+        title: const Text('My Appointments'),
+      ),
 
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        doctor.docPhotoUrl), // Assuming doctor has imageURL
-                  ),
-                  title: Text(doctor.name),
-                  subtitle: Text(
-                      'Date: ${app[index].date}, Time: ${app[index].timeRange}'),
-                );
+      // body: Column(
+      //   children: [
+      //     ListView.builder(
+      //       itemCount: app.length,
+      //       itemBuilder: (context, index) {
+      //         // Find the corresponding doctor based on doctorId from the appointment
+      //         DoctorInformation doctor = doc.firstWhere(
+      //           (doctor) => doctor.doctorId == app[index].doctorId,
+      //         );
+
+      //         return ListTile(
+      //           leading: CircleAvatar(
+      //             backgroundImage: NetworkImage(
+      //                 doctor.docPhotoUrl), // Assuming doctor has imageURL
+      //           ),
+      //           title: Text(doctor.name),
+      //           subtitle: Text(
+      //               'Date: ${app[index].date}, Time: ${app[index].timeRange}'),
+      //         );
+      //       },
+      //     ),
+
+      //     // ElevatedButton(
+      //     //   onPressed: () async {
+      //     //     NotificationWeekAndTime? pickedSchedule =
+      //     //         await pickSchedule(context);
+      //     //     if (pickedSchedule != null) {
+      //     //       createAppointmentReminder(pickedSchedule);
+      //     //     }
+      //     //   },
+      //     //   child: const Text('Set Reminder'),
+      //     // ),
+      //     // ElevatedButton(
+      //     //   onPressed: cancelScheduledNotifications,
+      //     //   child: const Text('Cancel Reminder'),
+      //     // ),
+      //   ],
+      // ),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                DoctorInformation doctor = doc.firstWhere(
+                    (doctor) => doctor.doctorId == app[index].doctorId,
+                    orElse: () => DoctorInformation(
+                          name: '',
+                          email: '',
+                          password: '',
+                          availableDates: [],
+                          availableTimeRanges: [],
+                          contact: '',
+                          docPhotoUrl: '',
+                          doctorDoc: '',
+                          doctorId: '',
+                          gender: '',
+                          language: '',
+                          speciality: '',
+                          role: '',
+                          lastMessageTime: '',
+                        ));
+                if (doctor != null) {
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(doctor.docPhotoUrl),
+                    ),
+                    title: Text(
+                      doctor.name,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        color: Colors.blue, // Change the text color to blue
+                        fontWeight: FontWeight.bold, // Make the text bold
+                        fontStyle: FontStyle.italic, // Add italic style
+                        decoration:
+                            TextDecoration.underline, // Underline the text
+                        decorationColor:
+                            Colors.orange, // Set the underline color to orange
+                        decorationThickness: 2, // Set the underline thickness
+                      ),
+                    ),
+                    subtitle: Text(
+                      'Date: ${app[index].date}, Time: ${app[index].timeRange}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        color: Colors.blue, // Change the text color to blue
+                        fontWeight: FontWeight.bold, // Make the text bold
+                        fontStyle: FontStyle.italic, // Add italic style
+                        decoration:
+                            TextDecoration.underline, // Underline the text
+                        decorationColor:
+                            Colors.orange, // Set the underline color to orange
+                        decorationThickness: 2, // Set the underline thickness
+                      ),
+                    ),
+                  );
+                } else {
+                  return const ListTile(
+                    title: Text('Doctor not found'),
+                  );
+                }
               },
+              childCount: app.length,
             ),
-            // ElevatedButton(
-            //   onPressed: () async {
-            //     NotificationWeekAndTime? pickedSchedule =
-            //         await pickSchedule(context);
-            //     if (pickedSchedule != null) {
-            //       createAppointmentReminder(pickedSchedule);
-            //     }
-            //   },
-            //   child: const Text('Set Reminder'),
-            // ),
-            // ElevatedButton(
-            //   onPressed: cancelScheduledNotifications,
-            //   child: const Text('Cancel Reminder'),
-            // ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 }
