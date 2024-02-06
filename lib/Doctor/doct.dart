@@ -46,6 +46,7 @@ class Doct {
     required List<String> availableDates,
     required List<String> availableTimeRanges,
     required String role,
+    required bool approved,
   }) async {
     String res = 'Some error';
     try {
@@ -82,6 +83,7 @@ class Doct {
           availableTimeRanges: availableTimeRanges,
           role: role,
           lastMessageTime: DateTime.now().toIso8601String(),
+          approved: false,
         );
         _firestoreOfDoctor
             .collection('Doctor')

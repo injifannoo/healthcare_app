@@ -1,3 +1,3 @@
-export '../Providers/user_provider.dart';
-export '../Providers/doctor_provider.dart';
-export '../Providers/appointmenr_provider.dart';
+export '../Patient/user_provider.dart';
+export '../Doctor/doctor_provider.dart';
+export '../Appointment/appointmenr_provider.dart';

@@ -19,6 +19,7 @@ class _CommentCardState extends State<CommentCard> {
     final Users user = Provider.of<UserProvider>(context).getCurrentUser;
 
     return Container(
+      color: Colors.red,
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
       child: Row(
         children: [
@@ -40,7 +41,7 @@ class _CommentCardState extends State<CommentCard> {
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextSpan(
-                        text: '${widget.snap['text']}',
+                        text: 'text ${widget.snap['text']}',
                       ),
                     ]),
                   ),

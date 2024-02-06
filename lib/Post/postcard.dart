@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:healthcare_app/Post/comment_doctor.dart';
 import 'package:healthcare_app/Post/like_animation.dart';
-import 'package:healthcare_app/Post/post.dart';
+import 'package:healthcare_app/Post/postExport.dart';
 import 'package:healthcare_app/Providers/provider.dart';
-import 'package:healthcare_app/models/user.dart';
+import 'package:healthcare_app/Doctor/doctor_info.dart';
+import 'package:healthcare_app/Patient/user.dart';
 import 'package:healthcare_app/utils/colors.dart';
 import 'package:healthcare_app/utils/image.dart';
 import 'package:intl/intl.dart';
@@ -32,14 +34,16 @@ class _PostCardState extends State<PostCard> {
     try {
       QuerySnapshot snap = await FirebaseFirestore.instance
           .collection('posts')
-          .doc('postId')
+          .doc(widget.snap['postId'])
           .collection('comments')
           .get();
       commentLen = snap.docs.length;
     } catch (e) {
       showSnackBar(e.toString(), context);
     }
-    setState(() {});
+    // setState(() {
+    //   commentLen = commentLen;
+    // });
   }
 
   // @override
@@ -49,18 +53,18 @@ class _PostCardState extends State<PostCard> {
   void initState() {
     super.initState();
     final userId = FirebaseAuth.instance.currentUser?.uid;
-    print("User current id is ${userId}");
+    print("Doctor current id is ${userId}");
     if (userId != null) {
-      Provider.of<UserProvider>(context, listen: false)
-          .fetchCurrentUser(userId);
+      Provider.of<DoctorProvider>(context, listen: false)
+          .fetchCurrentDoctor(userId);
     }
     getComments();
   }
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
-    final Users user = userProvider.getCurrentUser;
+    final doctorProvider = Provider.of<DoctorProvider>(context);
+    final DoctorInformation user = doctorProvider.currentUser!;
 
     return Container(
       color: mobileBackgroundColor,
@@ -94,7 +98,7 @@ class _PostCardState extends State<PostCard> {
                     ),
                   ),
                 ),
-                widget.snap['uid'] == user.uid
+                widget.snap['uid'] == user.doctorId
                     ? IconButton(
                         onPressed: () {
                           showDialog(
@@ -138,7 +142,7 @@ class _PostCardState extends State<PostCard> {
             onDoubleTap: () async {
               await postMethod().likePost(
                 widget.snap['postId'],
-                user.uid,
+                user.doctorId,
                 widget.snap['likes'],
               );
               setState(() {
@@ -178,17 +182,17 @@ class _PostCardState extends State<PostCard> {
           Row(
             children: <Widget>[
               LikeAnimation(
-                isAnimating: widget.snap['likes'].contains(user.uid),
+                isAnimating: widget.snap['likes'].contains(user.doctorId),
                 smallLike: true,
                 child: IconButton(
                   onPressed: () async {
                     await postMethod().likePost(
                       widget.snap['postId'].toString(),
-                      user.uid,
+                      user.doctorId,
                       widget.snap['likes'],
                     );
                   },
-                  icon: widget.snap['likes'].contains(user.uid)
+                  icon: widget.snap['likes'].contains(user.doctorId)
                       ? const Icon(
                           Icons.favorite,
                           color: Colors.red,
@@ -202,8 +206,8 @@ class _PostCardState extends State<PostCard> {
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CommentScreen(
-                      snap: widget.snap,
+                    builder: (context) => CommentScreenDoc(
+                      postId: widget.snap['postId'].toString(),
                     ),
                   ),
                 ),
@@ -258,7 +262,9 @@ class _PostCardState extends State<PostCard> {
                       children: [
                         TextSpan(
                           text: widget.snap['name'].toString(),
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic),
                         ),
                         TextSpan(
                             text: '  ${widget.snap['description']}',
@@ -270,7 +276,9 @@ class _PostCardState extends State<PostCard> {
                 InkWell(
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => CommentScreen(snap: widget.snap),
+                      builder: (context) => CommentScreenDoc(
+                        postId: widget.snap['postId'],
+                      ),
                     ),
                   ),
                   child: Container(

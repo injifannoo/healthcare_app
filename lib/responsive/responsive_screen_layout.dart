@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:healthcare_app/Providers/user_provider.dart';
+import 'package:healthcare_app/Patient/user_provider.dart';
 import 'package:healthcare_app/utils/global_variables.dart';
 import 'package:provider/provider.dart';
 

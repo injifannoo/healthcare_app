@@ -2,9 +2,11 @@ import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:healthcare_app/Post/feeds.dart';
 import 'package:healthcare_app/Post/post_method.dart';
 import 'package:healthcare_app/Providers/provider.dart';
-import 'package:healthcare_app/models/user.dart';
+import 'package:healthcare_app/Doctor/doctor_info.dart';
+import 'package:healthcare_app/Patient/user.dart';
 import 'package:healthcare_app/utils/colors.dart';
 import 'package:healthcare_app/utils/image.dart';
 import 'package:image_picker/image_picker.dart';
@@ -48,6 +50,7 @@ class _AddPostState extends State<AddPost> {
           context,
         );
         clearImage();
+        Feed();
       } else {
         setState(() {
           isLoading = false;
@@ -107,6 +110,8 @@ class _AddPostState extends State<AddPost> {
   void clearImage() {
     setState(() {
       _file = null;
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => Feed()));
     });
   }
 
@@ -120,22 +125,22 @@ class _AddPostState extends State<AddPost> {
   void initState() {
     super.initState();
     final userId = FirebaseAuth.instance.currentUser?.uid;
-    print("User current id is ${userId}");
+    print("User doctor id is ${userId}");
     if (userId != null) {
-      Provider.of<UserProvider>(context, listen: false)
-          .fetchCurrentUser(userId);
+      Provider.of<DoctorProvider>(context, listen: false)
+          .fetchCurrentDoctor(userId);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
-    final Users currentUser = userProvider.getCurrentUser;
+    final doctorProvider = Provider.of<DoctorProvider>(context);
+    final DoctorInformation currentUser = doctorProvider.currentUser!;
 
     // @override
     // Widget build(BuildContext context) {
     //   final userProvider = Provider.of<UserProvider>(context);
-    //   final Users? currentUser = userProvider.currentUser;
+    //   final DoctorInformation? currentUser = userProvider.currentUser;
 
     return _file == null
         ? Material(
@@ -157,9 +162,9 @@ class _AddPostState extends State<AddPost> {
                 actions: [
                   TextButton(
                     onPressed: () => postImage(
-                        currentUser.uid,
+                        currentUser.doctorId,
                         currentUser.name,
-                        currentUser.photoUrl,
+                        currentUser.docPhotoUrl,
                         DateTime.now()), //attention here
                     child: const Text(
                       'Post',
@@ -183,7 +188,7 @@ class _AddPostState extends State<AddPost> {
                         )),
                   const Divider(),
                   CircleAvatar(
-                    backgroundImage: NetworkImage(currentUser.photoUrl),
+                    backgroundImage: NetworkImage(currentUser.docPhotoUrl),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.4,

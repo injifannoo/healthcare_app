@@ -1,5 +1,5 @@
-export '../Screens/login_screen.dart';
-export '../Screens/signup_screen.dart';
-export '../Screens/profile.dart';
-export '../Screens/search.dart';
-export '../Screens/display_user.dart';
+export '../Auntethication/login_screen.dart';
+export '../Auntethication/signup_screen.dart';
+export '../Post/profile.dart';
+export '../Post/search.dart';
+export '../Patient/display_user.dart';

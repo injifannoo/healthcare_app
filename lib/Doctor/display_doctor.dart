@@ -81,13 +81,14 @@ class _DisplayDoctorState extends State<DisplayDoctor> {
           return Column(
             children: [
               Container(
-                height: MediaQuery.of(context).size.width / 2.8,
+                height: 300,
                 width: 200,
-                margin: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.yellow,
                       blurRadius: 4,
@@ -112,20 +113,20 @@ class _DisplayDoctorState extends State<DisplayDoctor> {
                             );
                           },
                           child: ClipRRect(
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(15),
                               topRight: Radius.circular(15),
                             ),
                             // child: Image.asset(
                             //   'assets/images/health.jpg',
-                            //   height: 100,
+                            //   height: 140,
                             //   width: 200,
                             //   fit: BoxFit.cover,
                             // ),
                             child: Image.network(
                               doctors[index].docPhotoUrl,
                               width: 200,
-                              height: 200,
+                              height: 140,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -136,7 +137,7 @@ class _DisplayDoctorState extends State<DisplayDoctor> {
                             margin: EdgeInsets.all(8),
                             height: 45,
                             width: 45,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.white,
                               shape: BoxShape.circle,
                               boxShadow: [
@@ -147,21 +148,22 @@ class _DisplayDoctorState extends State<DisplayDoctor> {
                                 )
                               ],
                             ),
-                            child: Center(
-                                child: Icon(
-                              Icons.favorite_outline,
-                              color: Colors.blue,
-                              size: 28,
-                            )),
+                            child: const Center(
+                              child: Icon(
+                                Icons.favorite_outline,
+                                color: Colors.blue,
+                                size: 28,
+                              ),
+                            ),
                           ),
                         )
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -179,16 +181,16 @@ class _DisplayDoctorState extends State<DisplayDoctor> {
                                 fontSize: 18,
                                 color: Colors.blue.withOpacity(0.6)),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                           Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.star,
                                 color: Colors.amber,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               Text(

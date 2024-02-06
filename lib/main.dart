@@ -1,19 +1,21 @@
 //import 'dart:html';
+//import 'dart:js';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:healthcare_app/Admin/signup_admin.dart';
 import 'package:healthcare_app/Chat/page/chats_page.dart';
-import 'package:healthcare_app/ChatUser/page/chats_page_user.dart';
+//import 'package:healthcare_app/ChatUser/page/chats_page_user.dart';
 import 'package:healthcare_app/Doctor/doctor-page.dart';
 import 'package:healthcare_app/Doctor/doctor.dart';
 import 'package:healthcare_app/Post/add_post.dart';
 import 'package:healthcare_app/Post/feeds.dart';
 import 'package:healthcare_app/Providers/provider.dart';
-import 'package:healthcare_app/Screens/signUpOne.dart';
-import 'package:healthcare_app/Screens/signup_screen.dart';
-import 'package:healthcare_app/home.dart';
-import 'package:healthcare_app/home_of_doctor.dart';
-import 'package:healthcare_app/inj.dart';
-import 'package:healthcare_app/registeration_choice.dart';
+import 'package:healthcare_app/Auntethication/signUpOne.dart';
+import 'package:healthcare_app/Patient/home.dart';
+import 'package:healthcare_app/Auntethication/signup_screen.dart';
+import 'package:healthcare_app/Doctor/home_of_doctor.dart';
+import 'package:healthcare_app/Doctor/welcomePage.dart';
+import 'package:healthcare_app/Screens/registeration_choice.dart';
 import 'package:healthcare_app/responsive/responsive.dart';
 import 'package:healthcare_app/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -31,21 +33,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   tzdata.initializeTimeZones(); // Initialize the time zones
 
-  //AwesomeNotification().initialize(
-  //NotificationChannel(
-  //channelKey:'basic_channel',
-  //channelName='Basic Notification',
-  //defaultColor='Colors.teal',
-  //importance:NotificationImportance.High,
-  //ChannelShowBadge:true,),
-  //NotificationChannel(
-  //channelKey:'scheduled_channel',
-  //channelName='Scheduled Notification',
-  //defaultColor='Colors.teal',
-  //importance:NotificationImportance.High,
-  //soundSource:'resource://raw/res_custom_notification
-//),
-//);
   if (kIsWeb) {
     await Firebase.initializeApp(
       options: const FirebaseOptions(

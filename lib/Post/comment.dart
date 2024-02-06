@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:healthcare_app/Post/post.dart';
+import 'package:healthcare_app/Post/postExport.dart';
 import 'package:healthcare_app/utils/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -9,8 +9,8 @@ import '../models/model.dart';
 import 'comment_card.dart';
 
 class CommentScreen extends StatefulWidget {
-  final snap;
-  const CommentScreen({super.key, required this.snap});
+  final postId;
+  const CommentScreen({super.key, required this.postId});
 
   @override
   State<CommentScreen> createState() => _CommentScreenState();
@@ -35,27 +35,29 @@ class _CommentScreenState extends State<CommentScreen> {
         title: const Text('comments'),
         centerTitle: false,
       ),
-      body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('posts')
-              .doc(widget.snap['postId'])
-              .collection('comments')
-              .orderBy('datePublised', descending: true)
-              .snapshots(),
-          builder: (context,
-              AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
+      body: Container(
+        child: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('posts')
+                .doc(widget.postId)
+                .collection('comments')
+                .orderBy('datePublised', descending: true)
+                .snapshots(),
+            builder: (context,
+                AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) => CommentCard(
+                  snap: snapshot.data!.docs[index],
+                ),
               );
-            }
-            return ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) => CommentCard(
-                snap: snapshot.data!.docs[index].data(),
-              ),
-            );
-          }),
+            }),
+      ),
       bottomNavigationBar: SafeArea(
         child: Container(
           height: kToolbarHeight,
@@ -83,14 +85,14 @@ class _CommentScreenState extends State<CommentScreen> {
               InkWell(
                 onTap: () async {
                   await postMethod().postComment(
-                    widget.snap['postId'],
+                    widget.postId,
                     _commentController.text,
                     user.uid,
                     user.name,
                     user.photoUrl,
                   );
                   setState(() {
-                    _commentController.text = '';
+                    _commentController.text = "";
                   });
                 },
                 child: Container(

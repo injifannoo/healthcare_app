@@ -98,7 +98,7 @@ class _DoctorPageState extends State<DoctorPage> {
                             CircleAvatar(
                               radius: 30,
                               backgroundImage: AssetImage(
-                                'assets/images/inj.jpg',
+                                'assets/images/health.jpg',
                               ),
                             ),
                             Icon(
@@ -176,7 +176,7 @@ class _DoctorPageState extends State<DoctorPage> {
                     height: 15,
                   ),
                   Container(
-                    height: 100,
+                    height: 105,
                     child: ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,

@@ -23,7 +23,6 @@ class FirebaseApi2 {
     try {
       final refMessages =
           FirebaseFirestore.instance.collection('chats/$groupChatId/messages');
-
       final userId = FirebaseAuth.instance.currentUser!.uid;
 
       //final user =FirebaseFirestore.instance.collection("users").doc(userId).get();
@@ -51,6 +50,7 @@ class FirebaseApi2 {
       String language = userData['language'] ?? '';
       String speciality = userData['speciality'] ?? '';
       String role = userData['role'] ?? '';
+      bool approved = userData['approved'] ?? '';
 
       String lastMessageTime = userData['lastMessageTime'] ?? '';
 
@@ -68,6 +68,7 @@ class FirebaseApi2 {
           language: language,
           speciality: speciality,
           role: role,
+          approved: approved,
           lastMessageTime: lastMessageTime);
 
       // Users? currentUser = UserProvider().getCurrentUser;

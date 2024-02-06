@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -19,18 +20,22 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
   DateTime? selectedDate;
   String? selectedTimeRange;
   TimeOfDay? selectedTime;
+  final String userId = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   void initState() {
     super.initState();
     Provider.of<AppointmentsProvider>(context, listen: false)
         .fetchAppointment();
+    Provider.of<UserProvider>(context, listen: false).fetchCurrentUser(userId);
   }
 
   @override
   Widget build(BuildContext context) {
     final apppointments = Provider.of<AppointmentsProvider>(context);
     final List<Appointment> app = apppointments.appointments;
+    final user = Provider.of<UserProvider>(context);
+    final Users users = user.getCurrentUser;
 
     return Scaffold(
       appBar: AppBar(
@@ -111,35 +116,72 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                 if (selectedDate != null && selectedTimeRange != null) {
                   Provider.of<AppointmentsProvider>(context, listen: false)
                       .addAppointment(
-                    doctorId: widget.doctor
-                        .doctorId, // Assuming there's an id field in Appointment
+                    doctorId: widget.doctor.doctorId,
+                    userId: users
+                        .uid, // Assuming there's an id field in Appointment
                     date: selectedDate!.toString(),
                     timeRange: selectedTimeRange!,
                   );
-                  // Remove the selected time range from the available time ranges
-                  widget.doctor.availableTimeRanges.remove(selectedTimeRange);
+                  // FirebaseFirestore.instance
+                  //     .collection('appointment')
+                  //     .where('userId', isEqualTo: userId)
+                  //     .get()
+                  //     .then((QuerySnapshot querySnapshot) {
+                  //   querySnapshot.docs.forEach((doc) {
+                  //     var data = doc.data();
+                  //     // Access the data for each document
+                  //     var date = (data! as Map<String, dynamic>)['date'];
+                  //     var timeRange =
+                  //         (data! as Map<String, dynamic>)['timeRange'];
 
-                  // Update the Doctor collection to reflect the changes
+                  // Pass the data to the next screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AppointmentConfirmationScreen(
+                        doctor: widget.doctor,
+                        selectedDate: selectedDate.toString(),
+                        selectedTimeRange: selectedTimeRange!,
+                      ),
+                    ),
+                  );
                   FirebaseFirestore.instance
                       .collection('Doctor')
                       .doc(widget.doctor.doctorId)
                       .update({
                     'availableTimeRanges':
                         FieldValue.arrayRemove([selectedTimeRange]),
-                  });
+                  }).then((value) {
+                    print("The time range to be deleted ${selectedTimeRange}");
+                    print('Data removed from array successfully!');
+                  }).catchError((error) {
+                    print('Error removing data from array: $error');
+                  }
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AppointmentConfirmationScreen(
-                        doctor: widget.doctor,
-                        //appointment: widget.appointment,
-                        selectedDate: selectedDate!,
-                        selectedTimeRange: selectedTimeRange!,
-                      ),
-                    ),
-                  );
-                } else {
+                          //);
+                          // }
+                          );
+                  FirebaseFirestore.instance
+                      .collection('Doctor')
+                      .doc(widget.doctor.doctorId)
+                      .update({
+                    'availableDates': FieldValue.arrayRemove([selectedDate]),
+                  }).then((value) {
+                    print("The Dates to be deleted ${selectedDate}");
+                    print('Data removed from array successfully!');
+                  }).catchError((error) {
+                    print('Error removing data from array: $error');
+                  }
+
+                          //);
+                          // }
+                          );
+                }
+                //);
+                // }
+                // Update the Firestore document to reflect the changes
+
+                else {
                   // Show an error message if date and time are not selected
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(

@@ -1,7 +1,8 @@
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare_app/Doctor/doctor.dart';
-import 'package:healthcare_app/Screens/login_screen.dart';
+import 'package:healthcare_app/Auntethication/login_screen.dart';
 import 'package:healthcare_app/utils/colors.dart';
 import 'package:healthcare_app/widgets.dart';
 import 'package:image_picker/image_picker.dart';
@@ -82,16 +83,35 @@ class _LoginScreenState extends State<AddDoctor> {
       availableTimeRanges: availableTimeRanges,
       role: selectedRole!,
       doctorId: '',
+      approved: false,
     );
     setState(() {
       _isLoading = false;
     });
     if (res != 'success') {
       showSnackBar(res, context);
-    } else {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (contest) => const LoginScreen()),
-      );
+    }
+    // else {
+    //     Navigator.of(context).pushReplacement(
+    //       MaterialPageRoute(builder: (contest) => const LoginScreen()),
+    //     );
+    //   }
+    // }
+    else {
+      // Check if the doctor is approved
+      final doctorRef = FirebaseFirestore.instance.collection('Doctor').doc();
+      doctorRef.snapshots().listen((snapshot) {
+        final approved = snapshot.data()?['approved'] ?? false;
+        if (approved) {
+          // Doctor is approved, navigate to the next screen
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+          );
+        } else {
+          // Doctor is not approved, display a message or notification to indicate that the registration is pending approval.
+          showSnackBar('Your registration is pending approval.', context);
+        }
+      });
     }
   }
 

@@ -1,12 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:healthcare_app/Admin/approve_doctor.dart';
+import 'package:healthcare_app/utils/image.dart';
 import '../models/model.dart';
 import 'book_appointment.dart'; // Import the DoctorInformation class
 
-class DoctorDetailsScreen extends StatelessWidget {
+class DoctorDetailsScreen extends StatefulWidget {
   final DoctorInformation doctor;
 
   const DoctorDetailsScreen({super.key, required this.doctor});
 
+  @override
+  State<DoctorDetailsScreen> createState() => _DoctorDetailsScreenState();
+}
+
+class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,15 +39,15 @@ class DoctorDetailsScreen extends StatelessWidget {
                   // CircleAvatar(
                   //     backgroundColor: Colors.white,
                   //     child: Image.network(doctor.docPhotoUrl),),
-                  Image.asset(
-                    'assets/images/health.jpg', // Add your health app icon image
+                  Image.network(
+                    widget.doctor.docPhotoUrl, // Add your health app icon image
                     width: 90, // Set the desired width
                     height: 90,
                     fit: BoxFit.cover, // Set the desired height
                   ),
                   const SizedBox(height: 20),
 
-                  Text(doctor.name,
+                  Text(widget.doctor.name,
                       style: Theme.of(context).textTheme.headlineLarge),
                 ],
               ),
@@ -60,7 +69,7 @@ class DoctorDetailsScreen extends StatelessWidget {
                 children: [
                   const Icon(Icons.person),
                   Text(
-                    ' ${doctor.name}',
+                    ' ${widget.doctor.name}',
                     style: Theme.of(context).textTheme.headlineSmall,
                     //const TextStyle(
                     //   fontSize: 18,
@@ -79,7 +88,7 @@ class DoctorDetailsScreen extends StatelessWidget {
                 children: [
                   const Icon(Icons.email),
                   Text(
-                    ' ${doctor.email}',
+                    ' ${widget.doctor.email}',
                     style: Theme.of(context).textTheme.headlineSmall,
                     // const TextStyle(
                     //   fontSize: 18,
@@ -97,7 +106,7 @@ class DoctorDetailsScreen extends StatelessWidget {
                 children: [
                   const Icon(Icons.health_and_safety),
                   Text(
-                    ' Specialist of ${doctor.speciality}',
+                    ' Specialist of ${widget.doctor.speciality}',
                     style: Theme.of(context).textTheme.headlineSmall,
                     //const TextStyle(
                     //   fontSize: 18,
@@ -116,7 +125,7 @@ class DoctorDetailsScreen extends StatelessWidget {
                 children: [
                   const Icon(Icons.call),
                   Text(
-                    ' ${doctor.contact}',
+                    ' ${widget.doctor.contact}',
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ],
@@ -126,7 +135,7 @@ class DoctorDetailsScreen extends StatelessWidget {
                 children: [
                   const Icon(Icons.person_2),
                   Text(
-                    'Gender: ${doctor.gender}',
+                    'Gender: ${widget.doctor.gender}',
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ],
@@ -136,7 +145,7 @@ class DoctorDetailsScreen extends StatelessWidget {
                 children: [
                   const Icon(Icons.language),
                   Text(
-                    ' ${doctor.language}',
+                    ' ${widget.doctor.language}',
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ],
@@ -151,7 +160,7 @@ class DoctorDetailsScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   Column(
-                    children: doctor.availableDates.map((dateTime) {
+                    children: widget.doctor.availableDates.map((dateTime) {
                       String extractedDate = dateTime.toString().split(" ")[0];
                       return Text(
                         extractedDate,
@@ -170,8 +179,8 @@ class DoctorDetailsScreen extends StatelessWidget {
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children:
-                        doctor.availableTimeRanges.map<Widget>((timeRange) {
+                    children: widget.doctor.availableTimeRanges
+                        .map<Widget>((timeRange) {
                       final startTime = timeRange
                           .substring(timeRange.indexOf("(") + 1,
                               timeRange.indexOf(")"))
@@ -192,14 +201,14 @@ class DoctorDetailsScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-
               ElevatedButton(
                 onPressed: () {
                   // Navigate to the appointment booking screen
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MyAppointmentScreen(doctor: doctor),
+                      builder: (context) =>
+                          MyAppointmentScreen(doctor: widget.doctor),
                     ),
                   );
                 },

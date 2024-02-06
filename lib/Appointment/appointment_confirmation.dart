@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 
 class AppointmentConfirmationScreen extends StatefulWidget {
   final DoctorInformation doctor;
-  final DateTime selectedDate;
+  final String selectedDate;
   //final TimeOfDay selectedTime;
   final String selectedTimeRange;
 
@@ -86,7 +86,7 @@ class _AppointmentConfirmationScreenState
             //         ),
             //         ),
             Text(
-              'Date: ${(widget.doctor.availableDates)}',
+              'Date: ${(widget.selectedDate)}',
               style: const TextStyle(
                 fontSize: 18,
                 color: Colors.blue, // Change the text color to blue
@@ -100,7 +100,7 @@ class _AppointmentConfirmationScreenState
             ),
 
             Text(
-              'Time: ${widget.doctor.availableTimeRanges}',
+              'Time: ${widget.selectedTimeRange}',
               style: const TextStyle(
                 fontSize: 18,
                 color: Colors.green, // Change the text color to green

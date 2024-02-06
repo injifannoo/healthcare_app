@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare_app/Notification/notification.dart';
 import 'package:provider/provider.dart';
@@ -13,56 +14,14 @@ class MyAppointmentPage extends StatefulWidget {
 }
 
 class _MyAppointmentPageState extends State<MyAppointmentPage> {
+  final String userId = FirebaseAuth.instance.currentUser!.uid;
   @override
   void initState() {
     super.initState();
     Provider.of<AppointmentsProvider>(context, listen: false)
         .fetchAppointment();
     Provider.of<DoctorProvider>(context, listen: false).fetchDoctors();
-    // AwesomeNotifications().isNotificationAllowed().then(isAllowed){
-    // if(!isAllowed){
-    // showDialog(context:context,builder:(context)=>AlertDialog(
-    // title:Text('Allow Notification'),
-    // content:Text('The app would like to send you reminder'),
-// actions:[
-// TextButton(
-// onpressed:(){},
-// child: Text(' Don\'t Allow',
-// style: TextStyle(
-// color:Colors.grey,
-// fontsize:18,
-// ),
-// ),
-// ),
-// TextButton(oSendNotifications().then((_)=>Navigator.pop(context)),
-// child: Text('Allow')
-// style: TextStyle(
-// color:Colors.teal,
-// fontsize:fontWeight.bold,
-// ),
-// ),
-// ],
-    // ))}
-    // }.;
-
-    //AwesomeNotifications().createStream.listen((event){
-    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Notification is created on ${Notification.channelKey}'),))
-    //});
-    //AwesomeNotifications().actionStream.listen((event){
-    //Navigator.pushAndRemoveUntil(
-    //context,
-    //MaterialPageRoute(
-    //builder:(_)=>PlantStatsPage(),),
-    //(route)=>route.isFirst);
-    //});
-  }
-
-  @override
-  void dispose() {
-    // AwesomeNotification().actionSink.close();
-    // AwesomeNotification().createSink.close();
-
-    super.dispose();
+    Provider.of<UserProvider>(context, listen: false).fetchCurrentUser(userId);
   }
 
   @override
@@ -72,117 +31,150 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
 
     final doctors = Provider.of<DoctorProvider>(context);
     final List<DoctorInformation> doc = doctors.doctors;
+    final user = Provider.of<UserProvider>(context);
+    final Users users = user.getCurrentUser;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Appointments'),
-      ),
-
-      // body: Column(
-      //   children: [
-      //     ListView.builder(
-      //       itemCount: app.length,
-      //       itemBuilder: (context, index) {
-      //         // Find the corresponding doctor based on doctorId from the appointment
-      //         DoctorInformation doctor = doc.firstWhere(
-      //           (doctor) => doctor.doctorId == app[index].doctorId,
-      //         );
-
-      //         return ListTile(
-      //           leading: CircleAvatar(
-      //             backgroundImage: NetworkImage(
-      //                 doctor.docPhotoUrl), // Assuming doctor has imageURL
-      //           ),
-      //           title: Text(doctor.name),
-      //           subtitle: Text(
-      //               'Date: ${app[index].date}, Time: ${app[index].timeRange}'),
-      //         );
-      //       },
-      //     ),
-
-      //     // ElevatedButton(
-      //     //   onPressed: () async {
-      //     //     NotificationWeekAndTime? pickedSchedule =
-      //     //         await pickSchedule(context);
-      //     //     if (pickedSchedule != null) {
-      //     //       createAppointmentReminder(pickedSchedule);
-      //     //     }
-      //     //   },
-      //     //   child: const Text('Set Reminder'),
-      //     // ),
-      //     // ElevatedButton(
-      //     //   onPressed: cancelScheduledNotifications,
-      //     //   child: const Text('Cancel Reminder'),
-      //     // ),
-      //   ],
-      // ),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                DoctorInformation doctor = doc.firstWhere(
-                    (doctor) => doctor.doctorId == app[index].doctorId,
-                    orElse: () => DoctorInformation(
-                          name: '',
-                          email: '',
-                          password: '',
-                          availableDates: [],
-                          availableTimeRanges: [],
-                          contact: '',
-                          docPhotoUrl: '',
-                          doctorDoc: '',
-                          doctorId: '',
-                          gender: '',
-                          language: '',
-                          speciality: '',
-                          role: '',
-                          lastMessageTime: '',
-                        ));
-                if (doctor != null) {
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(doctor.docPhotoUrl),
-                    ),
-                    title: Text(
-                      doctor.name,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        color: Colors.blue, // Change the text color to blue
-                        fontWeight: FontWeight.bold, // Make the text bold
-                        fontStyle: FontStyle.italic, // Add italic style
-                        decoration:
-                            TextDecoration.underline, // Underline the text
-                        decorationColor:
-                            Colors.orange, // Set the underline color to orange
-                        decorationThickness: 2, // Set the underline thickness
+    return Container(
+      height: 800,
+      child: ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        itemCount: doc.length,
+        itemBuilder: (context, index) {
+          DoctorInformation doctor = doc.firstWhere(
+              (doctor) =>
+                  doctor.doctorId == app[index].doctorId &&
+                  users.uid == app[index].userId,
+              orElse: () => DoctorInformation(
+                    name: '',
+                    email: '',
+                    password: '',
+                    availableDates: [],
+                    availableTimeRanges: [],
+                    contact: '',
+                    docPhotoUrl: '',
+                    doctorDoc: '',
+                    doctorId: '',
+                    gender: '',
+                    language: '',
+                    speciality: '',
+                    role: '',
+                    approved: false,
+                    lastMessageTime: '',
+                  ));
+          if (doctor.doctorId == app[index].doctorId &&
+              users.uid == app[index].userId) {
+            return Column(
+              children: [
+                Container(
+                  height: 340,
+                  width: 400,
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.yellow,
+                        blurRadius: 4,
+                        spreadRadius: 2,
                       ),
-                    ),
-                    subtitle: Text(
-                      'Date: ${app[index].date}, Time: ${app[index].timeRange}',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        color: Colors.blue, // Change the text color to blue
-                        fontWeight: FontWeight.bold, // Make the text bold
-                        fontStyle: FontStyle.italic, // Add italic style
-                        decoration:
-                            TextDecoration.underline, // Underline the text
-                        decorationColor:
-                            Colors.orange, // Set the underline color to orange
-                        decorationThickness: 2, // Set the underline thickness
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(15),
+                              topRight: Radius.circular(15),
+                            ),
+                            child: Image.network(
+                              doctor.docPhotoUrl,
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  );
-                } else {
-                  return const ListTile(
-                    title: Text('Doctor not found'),
-                  );
-                }
-              },
-              childCount: app.length,
-            ),
-          ),
-        ],
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Image(
+                            //   image: NetworkImage(doc[index].docPhotoUrl),
+                            // ),
+                            Text(doctor.name,
+                                style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.blue.withOpacity(0.6))),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Text(
+                              doctor.speciality,
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.blue.withOpacity(0.6)),
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Text('Dates: ${app[index].date}',
+                                style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.blue.withOpacity(0.6))),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Text(
+                              'Times: ${app[index].timeRange}',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.blue.withOpacity(0.6)),
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  '4.5',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.blue.withOpacity(0.6)),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            );
+          } else {
+            return const Text('');
+          }
+        },
       ),
     );
   }

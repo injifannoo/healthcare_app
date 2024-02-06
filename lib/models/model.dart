@@ -1,4 +1,4 @@
-export '../../models/user.dart';
-export 'doctor_info.dart';
-export '../models/post.dart';
-export '../../models/appointment.dart';
+export '../Patient/user.dart';
+export '../Doctor/doctor_info.dart';
+export '../Post/post.dart';
+export '../Appointment/appointment.dart';

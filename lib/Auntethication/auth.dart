@@ -67,8 +67,73 @@ class Auth {
     return res;
   }
 
+  Future<String> signUpAdmin({
+    required String email,
+    required String password,
+    required String name,
+    required Uint8List? fileAdmin,
+    required String role,
+    required String address,
+    required String dateOfBirth,
+    required String gender,
+    required String phone,
+    required bool approved,
+  }) async {
+    String res = 'Somer error occurred';
+    try {
+      if (email.isNotEmpty || password.isNotEmpty || name.isNotEmpty) {
+        //register admin
+        UserCredential cred = await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
+
+        String photoUrl = await Storage()
+            .uploadImageToStorage('AdminPics', fileAdmin!, false);
+        //add user info to database
+        model.Admin user = model.Admin(
+          email: email,
+          password: password,
+          name: name,
+          photoUrl: photoUrl,
+          uid: cred.user!.uid,
+          role: role,
+          address: address,
+          dateOfBirth: dateOfBirth,
+          gender: gender,
+          phone: phone,
+          approved: false,
+        );
+        _firestore.collection('Admins').doc(cred.user!.uid).set(user.toJson());
+        res = 'success';
+      }
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
 //login user
   Future<String> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    String res = 'some error';
+    try {
+      if (email.isNotEmpty || password.isNotEmpty) {
+        //add user
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        res = 'success';
+      } else {
+        res = 'Please enter all the fields';
+      }
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
+  //login Admin
+  Future<String> loginAdmin({
     required String email,
     required String password,
   }) async {
