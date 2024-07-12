@@ -110,6 +110,9 @@ class _LoginScreenState extends State<AddDoctor> {
         } else {
           // Doctor is not approved, display a message or notification to indicate that the registration is pending approval.
           showSnackBar('Your registration is pending approval.', context);
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+          );
         }
       });
     }
@@ -363,22 +366,23 @@ class _LoginScreenState extends State<AddDoctor> {
                 InkWell(
                   onTap: () => addDoctor(widget.selectedRole),
                   child: Container(
-                    width: double.infinity,
+                    width: 200,
+                    height: 40,
                     alignment: Alignment.center,
                     decoration: const ShapeDecoration(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
-                            Radius.circular(12),
+                            Radius.circular(10),
                           ),
                         ),
                         color: blueColor),
                     child: _isLoading == true
                         ? const Center(
-                            child: CircularProgressIndicator(
-                              color: primaryColor,
-                            ),
-                          )
-                        : const Text("SignUp"),
+                      child: CircularProgressIndicator(
+                        color: primaryColor,
+                      ),
+                    )
+                        : const Text("SignUP"),
                   ),
                 ),
                 const SizedBox(

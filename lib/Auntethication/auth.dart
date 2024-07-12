@@ -39,7 +39,6 @@ class Auth {
         //register user
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
-
         String photoUrl =
             await Storage().uploadImageToStorage('profilePics', file!, false);
         // Get the current date and time
